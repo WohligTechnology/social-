@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd 
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+        
+    <bean
+	class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+	<!-- Loading Resource Bundle Properties file  -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+		<list>
+			<value>response</value>
+			<value>email</value>
+		</list>
+		</property>
+	</bean>
+	
+	<!-- Data Source to be used -->
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/Sirf"
+		resource-ref="true" />
+
+	<task:annotation-driven />
+
+	<!-- <bean id="dataSourceBean" class="org.springframework.jdbc.datasource.DriverManagerDataSource"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property> 
+		<property name="url" value="jdbc:mysql://http://59.163.47.61/sirf"></property> 
+		<property name="username" value="sirf"></property> <property name="password" 
+		value="Sirf@1234"></property> </bean> -->
+
+	<bean id="jdbcProperties"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+	    <property name="location" value="classpath:jdbc.properties" />
+	</bean>	 
+	
+	<!-- 		
+	<bean id="dataSourceBean" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.sirf_db_url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.minPoolSize}" />
+		<property name="maxStatements" value="${jdbc.maxStatements}" />
+		<property name="testConnectionOnCheckout" value="${jdbc.testConnection}" />
+	</bean>
+	 -->
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+    <property name="poolName" value="springHikariCP" />
+    <property name="connectionTestQuery" value="SELECT 1" />
+    <property name="dataSourceClassName" value="${jdbc.driverClassName}" />
+    <property name="maximumPoolSize" value="${jdbc.maxPoolSize}" />
+    <property name="idleTimeout" value="${jdbc.timeout}" />
+
+    <property name="dataSourceProperties">
+        <props>
+            <prop key="url">${jdbc.sirf_db_url}</prop>
+            <prop key="user">${jdbc.username}</prop>
+            <prop key="password">${jdbc.password}</prop>
+            <!-- 
+            <prop key="prepStmtCacheSize">250</prop>
+            <prop key="prepStmtCacheSqlLimit">2048</prop>
+            <prop key="cachePrepStmts">true</prop>
+            <prop key="useServerPrepStmts">true</prop>
+             -->
+        </props>
+    </property>
+	</bean>
+
+	<!-- HikariCP configuration -->
+	<bean id="dataSourceBean" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+   	 	<constructor-arg ref="hikariConfig" />
+	</bean>
+
+	<tx:annotation-driven proxy-target-class="true"
+		transaction-manager="transactionManager" />
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+
+	<bean id="applicationContextProvider" class="com.sirf.common.ApplicationContextProvider" />
+	
+	<bean id="dataServiceManager" class="com.sirf.common.service.DataServiceManager" />
+
+	<bean id="sirfSchedulerBean" class="com.sirf.schedule.SirfScheduler">
+		<property name="start" value="true" />
+	</bean>
+
+	<bean id="SirfDailySchedulerBean" class="com.sirf.schedule.SirfDailyScheduler">
+		<property name="start" value="true" />
+	</bean>
+	
+	<bean id="sirfRankingSchedulerBean" class="com.sirf.schedule.SirfRankingScheduler">
+	</bean>
+	<task:scheduler id="sirfScheduler" pool-size="10" />
+
+	<task:scheduled-tasks scheduler="sirfScheduler">
+		<task:scheduled ref="sirfSchedulerBean" method="cronJob"
+			cron="0 0/60 * * * ?" />
+	</task:scheduled-tasks>
+
+	<task:scheduler id="sirfDailyScheduler" pool-size="10" />
+
+	<task:scheduled-tasks scheduler="sirfDailyScheduler">
+		<task:scheduled ref="SirfDailySchedulerBean" method="cronJob"
+			cron="0 45 23 1/1 * *" />
+	</task:scheduled-tasks>
+	
+	<task:scheduler id="sirfRankingScheduler" pool-size="10" />
+
+	<task:scheduled-tasks scheduler="sirfRankingScheduler">
+		<task:scheduled ref="sirfRankingSchedulerBean" method="cronJob"
+			cron="0 0/30 * * * ?" />
+	</task:scheduled-tasks>
+	
+	<bean id="redditService" class="com.sirf.reddit.RedditService" />
+
+	<bean id="sirfDataRedditHandler" class="com.sirf.service.handler.SirfDataRedditHandler" />
+	
+	<bean id="sirfUserDataHandler" class="com.sirf.service.handler.SirfUserDataHandler" />
+	
+	<bean id="sirfPasswordEncoder" class="com.sirf.security.SirfPasswordEncoder" />
+	
+
+	<!-- Eg : If we need to import other logical spring configurations <import 
+		resource="database/Spring-Datasource.xml" /> <import resource="customer/Spring-Customer.xml" 
+		/> -->
+
+	<!-- Factory Starts -->
+	<bean id="domainFactory" class="com.sirf.domain.factory.DomainObjectFactory"
+		factory-method="getInstance">
+	</bean>
+	<!-- Factory Ends -->
+
+	<!-- DAO Starts -->
+	<bean id="sirfDAO" class="com.sirf.dao.SirfDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	<bean id="sirfCommentDAO" class="com.sirf.dao.SirfCommentDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	<bean id="sirfDetailsDAO" class="com.sirf.dao.SirfDetailsDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	
+		<bean id="sirfSubscriberDAO" class="com.sirf.dao.SirfSubscriberDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	<bean id="sirfUserDAO" class="com.sirf.dao.SirfUserDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	
+	<bean id="sirfUserFavouriteDAO" class="com.sirf.dao.SirfUserFavouriteDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+
+	<bean id="sirfUserPageDAO" class="com.sirf.dao.SirfUserPageDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	
+	<bean id="sirfVoteDAO" class="com.sirf.dao.SirfVoteDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	
+	<bean id="sirfTopicDAO" class="com.sirf.dao.SirfTopicDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	<bean id="SirfCommentVoteDAO" class="com.sirf.dao.SirfCommentVoteDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	<bean id="SirfTagsDAO" class="com.sirf.dao.SirfTagsDAO">
+		<property name="dataSource" ref="dataSourceBean" />
+	</bean>
+	
+	<!-- DAO Ends -->
+	
+	<!-- Load sirf.properties -->
+	<bean id="sirfProperties"  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="false"/>
+	    <property name="location" value="classpath:sirf.properties" />
+	</bean>
+	<bean id="sirfConfig" class="com.sirf.prop.SirfPropImpl">
+        <property name="tokenExp" value="${sirf.user_tokenTimeout}"/>   
+        <property name="issuer" value="${sirf.token_issuer}"/>
+        <property name="serviceAccessList" value="${sirf.serviceAccessList_guest}"/>
+        <property name="applicaionId" value="${sirf.application_id}"/>
+	    <property name="guestVotePoints" value="${sirf.guestVotePoints}"/>
+        <property name="userVotePoints" value="${sirf.userVotePoints}"/>
+
+        <property name="awsAccessKey" value="${sirf.awsAccessKey}"/>
+        <property name="awsSecretKey" value="${sirf.awsSecretKey}"/>
+        <property name="bucketName" value="${sirf.bucketName}"/>
+        <property name="amazonS3Directory" value="${sirf.amazonS3Directory}"/>
+        <property name="isProxyRequired" value="${sirf.isProxyRequired}"/>
+        
+        <property name="redditinstanceName" value="${sirf.redditinstanceName}"/>
+        <property name="reddituserName" value="${sirf.reddituserName}"/>
+        <property name="redditpassword" value="${sirf.redditpassword}"/>
+        <property name="redditclientID" value="${sirf.redditclientID}"/>
+        <property name="redditsecret" value="${sirf.redditsecret}"/>
+        
+        <property name="resizeWidth" value="${sirf.resizeWidth}"/>
+        <property name="resizeHeight" value="${sirf.resizeHeight}"/>
+    </bean>
+    
+    <bean id="uploadService" class="com.sirf.upload.SirfUploadDataService" />
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="sirfskillnet@gmail.com" />
+		<property name="password" value="Sirf@1234" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- Loading Resource Bundle Properties file  -->
+	<bean id="emailmessageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<value>email</value>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" id="taskExecutor">
+     <property name="corePoolSize" value="5"></property>
+     <property name="maxPoolSize" value="10"></property>
+     <property name="queueCapacity" value="40"></property>
+     <property name="waitForTasksToCompleteOnShutdown" value="true"></property>
+    </bean>
+    
+    <bean id="freemarkerConfiguration" class="freemarker.template.Configuration" />
+
+</beans>

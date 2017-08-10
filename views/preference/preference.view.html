@@ -1,0 +1,46 @@
+<section>
+    <div class="user-preference">
+        <div class="user-preference-categ">
+            <ul class="list-unstyled text-capitalize ">
+                <li><a href="" ng-class="{'active': view == 'account'}" ng-click="view = 'account'">account</a></li>
+                <li><a href="" ng-class="{'active': view == 'display'}" ng-click="view = 'display'">displays</a></li>
+                <li><a href="" ng-class="{'active': view == 'message'}" ng-click="view = 'message'">messaging</a></li>
+            </ul>
+        </div>
+        <div class="user-preference-options" ng-init="view ='display'">
+            <div class="user-preference-options-one" ng-if="view == 'account'">
+                <h3 class="preference-options-title">Account</h3>
+            </div>
+            <div class="user-preference-options-two" ng-if="view == 'display'">
+                <div class="preference-options-color text-capitalize">
+                    <h3 class="preference-options-title">color</h3>
+                    <form>
+                        <label class="radio-inline">
+									 <input type="radio" name="preference" class="option-input radio" >light
+								 </label>
+                        <label class="radio-inline ">
+									 <input type="radio" name="preference" class="option-input radio">dark
+								 </label>
+                        <label class="radio-inline">
+									 <input type="radio" name="preference" class="option-input radio">automatic
+								 </label>
+                    </form>
+                </div>
+                <div class="preference-options-layout text-capitalize">
+                    <h3 class="preference-options-title">default layout</h3>
+                    <form>
+                        <label class="radio-inline ">
+									 <input type="radio" name="preference" class="option-input radio">grid
+								 </label>
+                        <label class="radio-inline ">
+									 <input type="radio" name="preference" class="option-input radio">list
+								 </label>
+                    </form>
+                </div>
+            </div>
+            <div class="user-preference-options-three" ng-if="view == 'message'">
+                <h3 class="preference-options-title">message</h3>
+            </div>
+        </div>
+    </div>
+</section>

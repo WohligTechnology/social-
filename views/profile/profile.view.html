@@ -1,0 +1,129 @@
+<section class="profileTab">
+<div class="loadingdata" ng-show="isloading"><div class="sirflogo">Sirf</div></div>
+<div ng-show="!isloading">
+<div class="noUserData " ng-hide="isUserFound" style="padding:100px 0px;">
+	<div class="noUserDataLabel">User does not exist</div>
+	<div>Please use a valid user.</div>
+</div>
+<div class="UserFound" ng-show="isUserFound">
+<div id="crop-avatar">
+
+    <!-- Current avatar -->
+    <div class="avatar-view">
+      <span>
+      	<img src="images/no_cover_photo.png" alt="Cover Photo" class="noCoverPhoto" ng-show="isCoverPhotoEmpty">
+      	<img src="{{otherUserPageData['User Info'].backgroundImage}}" alt="Cover Photo" class="coverPhoto" ng-hide="isCoverPhotoEmpty">
+      </span>
+    </div>
+
+
+    <!-- Loading state -->
+  </div>
+
+<div id="crop-avatar-profile">
+
+    <!-- Current avatar -->
+    <div class="avatar-profile-view">
+      <span>
+      	<img src="images/no_profile_photo.png" alt="Profile Photo" class="noProfilePhoto" ng-show="isProfilePhotoEmpty">
+      	<img src="{{otherUserPageData['User Info'].profileImage}}" alt="Profile Photo" class="profilePhoto" ng-hide="isProfilePhotoEmpty">
+      </span>
+    </div>
+    <div class="userShortDetails">
+    	<div class="userName">{{otherUserPageData['User Info'].userID}}</div>
+    	<div class="userRating">{{otherUserPageData['User Info'].userPoint}}pts Noob</div>
+    	<div class="userSubscribers">{{otherUserPageData['User Info'].subscriptionCount}} Subscribers</div>
+    </div>
+    <div class="userSubscribeDetails" ng-hide="isCurrentUser">
+    	<button type="button" ng-click="subscribeuser(otherUserPageData['User Info'].userID);" class="userSubscribeButton" style="text-align: center;" ng-hide="isSubscribed">Subscribe</button>
+    	<button type="button" ng-click="unsubscribeuser(otherUserPageData['User Info'].userID);" class="userSubscribeButton" style="text-align: center;" ng-show="isSubscribed">Unsubscribe</button>
+    </div>
+  </div>
+
+
+
+			<script type="text/ng-template" id="myPosttpl.html">
+				<a class="topiclistimage" href="#/details/{{i.subReddit_topic}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/myPost/{{otherUserPageData['User Info'].userID}}/0/{{$index}}/0" ng-style="{'background-image':'{{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'url(images/no_image.png)' : 'url('+i.subReddit_Thumbnail+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.subReddit_Title}}">{{i.subReddit_Title}}</div>
+				</a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+            <script type="text/ng-template" id="favoritestpl.html">
+				<a class="topiclistimage" href="#/favorites/{{otherUserPageData['User Info'].userID}}/{{i.favouriteName}}" ng-style="{'background-image':'{{(i.imageLocation == 'default' || i.imageLocation == null || i.imageLocation == '' || i.imageLocation == 'self' || !i.imageLocation) ? 'url(images/no_image.png)' : 'url('+i.imageLocation+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.favouriteName}}" style="text-align:center">{{i.favouriteName}}</div>
+				</a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+            <script type="text/ng-template" id="subscribedtpl.html">
+				<a class="topiclistimage" href="#/profile/{{i.subscriber_id}}" ng-style="{'background-image':'{{(i.profile_image_path == 'default' || i.profile_image_path == null || i.profile_image_path == '' || i.profile_image_path == 'self' || !i.profile_image_path) ? 'url(images/no_image.png)' : 'url('+i.profile_image_path+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.subscriber_id}}">{{i.subscriber_id}}</div>
+				</a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+    <div>
+    
+        <div class="col-md-12 row-block content slickrow mypost" style="margin-top: 0;">
+            <a href="#/mypost/{{otherUserPageData['User Info'].userID}}">
+				<h4 class="content-title"><span ng-if="slickConfig1Loading" style="text-align:center; position: absolute;left: -28px;margin-top: -4px;font-size: 14px;"><i class="icon-spinner icon-spin icon-2x"></i></span>My Post</h4>
+			</a>
+			<div id="{{mypostopen}}">
+			<slick settings=slickConfigmypost ng-show="otherUserPageData['My Post'].length > 0">
+					<div ng-repeat="i in otherUserPageData['My Post']" style="margin-top:13px; style="position:relative;">
+						<div class="" ng-include="'myPosttpl.html'"></div>
+					</div>
+				</slick>
+			<div ng-show="otherUserPageData['My Post'].length == 0" class="col-md-12 noUserData">
+						<div class="noUserDataLabel">No Posts</div>
+			</div>
+			</div>
+        </div>
+        <div class="col-md-12 row-block content slickrow favorites">
+            <a href="#/favorites/{{otherUserPageData['User Info'].userID}}">
+				<h4 class="content-title"><span ng-if="slickConfig1Loading" style="text-align:center; position: absolute;left: -28px;margin-top: -4px;font-size: 14px;"><i class="icon-spinner icon-spin icon-2x"></i></span>Favorite</h4>
+			</a>
+			<div id="{{favoritesopen}}">
+			<slick settings=slickConfigfavorites ng-show="!isFavouriteEmpty">
+					<div ng-hide="i.private" ng-repeat="i in otherUserPageData['Favourite']" style="margin-top:13px; style="position:relative;" class="favoritesngrepeat">
+						<div class="" ng-include="'favoritestpl.html'"></div>
+					</div>
+				</slick>
+				<div ng-show="isFavouriteEmpty" class="col-md-12 noUserData">
+						<div class="noUserDataLabel">No Favorites</div>
+				</div>
+			</div>
+        </div>
+        <div class="col-md-12 row-block content slickrow subscribed">
+            <a href="#/subscribe/{{otherUserPageData['User Info'].userID}}">
+				<h4 class="content-title"><span ng-if="slickConfig1Loading" style="text-align:center; position: absolute;left: -28px;margin-top: -4px;font-size: 14px;"><i class="icon-spinner icon-spin icon-2x"></i></span>Subscribe</h4>
+			</a>
+			<div id="{{subscribedopen}}">
+			
+			<slick settings=slickConfigsubscribed ng-show="otherUserPageData['Subscribe'].length > 0 || isSubscriber">
+					<div ng-repeat="i in otherUserPageData['Subscribe']" style="margin-top:13px; style="position:relative;">
+						<div class="" ng-include="'subscribedtpl.html'"></div>
+					</div>
+				</slick>
+				<div ng-show="otherUserPageData['Subscribe'].length == 0 || isSubscriber" class="col-md-12 noUserData">
+						<div class="noUserDataLabel">No Subscriptions</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
+</div>
+</section>

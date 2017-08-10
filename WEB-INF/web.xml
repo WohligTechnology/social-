@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+    http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<display-name>SIRF</display-name>
+	
+    <context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>
+	      /WEB-INF/ApplicationContext.xml
+	    </param-value>
+  	</context-param>
+  	
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<servlet>
+	<servlet-name>jersey-serlvet</servlet-name>
+	<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+	<init-param>
+		<param-name>com.sun.jersey.config.property.packages</param-name>
+		<param-value>com.sirf.service</param-value>
+	</init-param>
+	<init-param>
+		<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+		<param-value>true</param-value>
+	</init-param>
+	<init-param>
+  		<param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+  		<param-value>com.sirf.service.SirfResponseStatusFilter</param-value>
+	</init-param>
+	
+	<load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+	<servlet-name>jersey-serlvet</servlet-name>
+	<url-pattern>/service/*</url-pattern>
+  </servlet-mapping>
+  
+
+ 
+  <filter>
+   	<filter-name>SirfAuthenticationFilter</filter-name>
+   	<filter-class>com.sirf.filter.SirfAuthenticationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+   	<filter-name>SirfAuthenticationFilter</filter-name>
+   	<url-pattern>http://59.163.47.61/service/sirfUser/*</url-pattern>
+  </filter-mapping>
+  <filter>
+   	<filter-name>SirfJsonUserIdFilter</filter-name>
+   	<filter-class>com.sirf.filter.SirfJsonUserIdFilter</filter-class>
+  </filter>
+  <filter-mapping>
+   	<filter-name>SirfJsonUserIdFilter</filter-name>
+   	<url-pattern>*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>SirfLoggingFilter</filter-name>
+    <filter-class>com.sirf.filter.logging.SirfLoggingFilter</filter-class>
+  </filter>
+	<filter-mapping>
+    	<filter-name>SirfLoggingFilter</filter-name>
+    	<url-pattern>/service/*</url-pattern>
+	</filter-mapping>
+   <!--  Test Service Starts
+   <servlet>
+    	<servlet-name>TestService</servlet-name>
+    	<servlet-class>com.sirf.test.TestService</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+    	<servlet-name>TestService</servlet-name>
+    	<url-pattern>/TestService</url-pattern>
+    </servlet-mapping>
+    Test Service Ends-->
+  	<resource-ref>
+	  <description>
+	    Resource reference to a factory for java.sql.Connection
+	    instances that may be used for talking to a particular
+	    database that is configured in the context
+	    configuration for the web application.
+	  </description>
+	  <res-ref-name>
+	    jdbc/Sirf
+	  </res-ref-name>
+	  <res-type>
+	    javax.sql.DataSource
+	  </res-type>
+	  <res-auth>
+	    Container
+	  </res-auth>
+	</resource-ref>
+  
+</web-app>

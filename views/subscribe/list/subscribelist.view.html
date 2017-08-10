@@ -1,0 +1,36 @@
+<section class="subscribeListTab">
+            <script type="text/ng-template" id="subscribedtpl.html">
+				<a class="topiclistimage" href="#/profile/{{i.subscriber_id}}" ng-style="{'background-image':'{{(i.profile_image_path == 'default' || i.profile_image_path == null || i.profile_image_path == '' || i.profile_image_path == 'self' || !i.profile_image_path) ? 'url(images/no_image.png)' : 'url('+i.profile_image_path+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.subscriber_id}}">{{i.subscriber_id}}</div>
+				</a>
+				<span class="removefavicon" ng-click="unsubscribeuser(i.subscriber_id, $event)" title="Unsubscribe" ng-show="isValidUser"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+         <div class="col-md-12 content subscribed" style="padding-bottom: 10px;" ng-show="!isSubscribeEmpty">
+            <h4 class="content-title" style="text-transform: capitalize;">Subscribe <span class="pull-right closeLink"><a href="javascript:history.back();" title=""><i class="fa fa-times" aria-hidden="true"></i></a></span></h4>
+            <ul class="ng-isolate-scope slick-initialized slick-slider slick-dotted" style="margin-top: 0;">
+				<li ng-repeat="i in subscribesUserList" class="ng-scope slick-slide slick-active" data-enabled="false" data-slick-index="1" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide11" style="margin: 10px 10px; height: auto !important;">
+					<div>
+						<div class="" ng-include="'subscribedtpl.html'"></div>
+						<div class="loadingdataoverlay" ng-show="isloadingremoveSubscribe"><div class="loadingdata"><div class="sirflogo">Sirf</div></div></div>
+					</div>
+				</li>
+			</ul>
+         </div>
+         <div class="col-md-12 nexturlpan text-center" ng-click="nextList();" ng-show="!isSubscribeEmpty" ng-hide="!isNextAvailable">
+			<span ng-if="!SubscribeList.slickConfig1Loaded"><i class="icon-spinner icon-spin icon-2x"></i></span>
+			<a href="javascript:void(0);" class="nextLink" ng-if="SubscribeList.slickConfig1Loaded"> <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+		</div>
+		<div ng-show="isSubscribeEmpty" class="col-md-12 noUserData" style="padding:100px 0px;">
+						<div class="noUserDataLabel">No Subscribed<br>
+							<a href="javascript:history.back();" style="font-size:12px;">Go to back</a>
+						</div>
+				</div>
+            
+</section>
+

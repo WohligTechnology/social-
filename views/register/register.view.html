@@ -1,0 +1,84 @@
+		<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()">&times;</button>
+                <div class="modal-title title"><div class="customtitle"><h3>Welcome To Sirf</h3></div></div>
+            </div>
+            <div class="modal-body">
+            <div class="registerContainer">
+            <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div class="col-md-12">
+                	<div class="col-md-6 signupcontainerrightborder">
+                		<div class="signupcontainer" ng-controller="RegisterController as rc">
+						    <h3 class="formHeader">Create Account</h3>
+						    <form name="formSignup" ng-submit="rc.register()" role="form" class="Registerform RegisterController" style="display: block;">
+						        <div class="form-group" ng-class="{ 'has-error': formSignup.userId.$dirty && (formSignup.userId.$error.required || formSignup.userId.$error.maxlength || formSignup.userId.$error.minlength || formSignup.userId.$error.pattern) }">
+						            <input type="text" ng-maxlength="20" ng-minlength="1" ng-pattern="/^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)?$/" name="userId" id="userId" class="form-control" ng-model="rc.user.userId" required placeholder="Username" />
+						            <span ng-show="formSignup.userId.$dirty && formSignup.userId.$error.required" class="help-block">Please enter valid username</span>
+						            <span ng-if="formSignup.userId.$dirty && formSignup.userId.$error.maxlength" class="help-block">You are exceeding the limit</span>
+						            <span ng-if="formSignup.userId.$dirty && formSignup.userId.$error.minlength" class="help-block">Username should atleast 1 Characters</span>
+						            <span ng-if="formSignup.userId.$dirty && formSignup.userId.$error.pattern" class="help-block">Not allowed special characters and space</span>
+						        </div>
+						        <!-- <div class="form-group" ng-class="{ 'has-error': formSignup.firstName.$dirty && (formSignup.firstName.$error.required  || formSignup.firstName.$error.maxlength)}">
+						            <input type="text" ng-maxlength="20" name="firstName" id="firstName" class="form-control" ng-model="rc.user.firstName" required placeholder="First Name" />
+						            <span ng-show="formSignup.firstName.$dirty && formSignup.firstName.$error.required" class="help-block">Please enter valid first name</span>
+						            <span ng-if="formSignup.firstName.$dirty && formSignup.firstName.$error.maxlength" class="help-block">You are exceeding the limit</span>
+						        </div>
+						        <div class="form-group" ng-class="{ 'has-error': formSignup.lastName.$dirty && (formSignup.lastName.$error.required  || formSignup.lastName.$error.maxlength) }">
+						            <input type="text" ng-maxlength="20" name="lastName" id="lastName" class="form-control" ng-model="rc.user.lastName" required placeholder="Last Name" />
+						            <span ng-show="formSignup.lastName.$dirty && formSignup.lastName.$error.required" class="help-block">Please enter valid last name</span>
+						            <span ng-if="formSignup.lastName.$dirty && formSignup.lastName.$error.maxlength" class="help-block">You are exceeding the limit</span>
+						        </div> -->
+						        <div class="form-group" ng-class="{ 'has-error': formSignup.password.$dirty && formSignup.password.$error }">
+						            <input type="password" name="password" id="password" class="form-control" ng-model="rc.user.password" required placeholder="Create Password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/"/>
+						            <span ng-messages="formSignup.password.$dirty && formSignup.password.$error" ng-show="formSignup.password.$dirty && formSignup.password.$error" class="help-block">
+							          <span ng-message="pattern">Password should be atleast 8 characters long
+							            and should contain one number,one character and one special
+							            character
+							            </span>
+							            <span ng-message="required">Password should be atleast 8 characters
+								            long and should contain one number,one character and one special
+								            character</span>
+							          </span>
+						        </div>
+						        <div class="form-group" ng-class="{ 'has-error': formSignup.password_c.$dirty && (formSignup.password_c.$error.required || formSignup.password_c.$error.match)}">
+						            <input type="password" name="password_c" id="password_c" class="form-control" ng-model="rc.user.password_c" placeholder="Confirm Password" validate-match="rc.user.password" required />
+						            <span ng-show="formSignup.password_c.$dirty" class="help-block">
+						            	<span ng-show="formSignup.password_c.$error.required" class="help-block">Tell us your confirm password.</span>
+						            	<span ng-show="formSignup.password_c.$error.match" class="help-block">Passwords do not match.</span>
+								    </span>
+						        </div>
+						        <div class="form-group" ng-class="{ 'has-error': formSignup.emailID.$dirty && (formSignup.emailID.$error.required || formSignup.emailID.$error.email) }">
+						            <input type="email" name="emailID" id="emailID" class="form-control" ng-model="rc.user.emailID" required placeholder="Email"/>
+						            <span ng-show="formSignup.emailID.$dirty" class="help-block">
+								      <span ng-show="formSignup.emailID.$error.required" class="help-block">Tell us your email.</span>
+								      <span ng-show="formSignup.emailID.$error.email" class="help-block">This is not a valid email.</span>
+								    </span>
+						        </div>
+						        <div class="form-actions">
+						            <button type="submit" ng-disabled="formSignup.$invalid || rc.dataLoading" class="signupbutton" style="text-align: center;">Sign Up</button>
+						            <img ng-if="rc.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						        </div>
+						    </form>
+					    </div>
+				    </div>
+				    <div class="col-md-6">
+				    	<div class="signincontainer" ng-controller="LoginController as lc">
+						    <h3 class="formHeader">Sign In</h3>
+						    <form name="formSignin" ng-model="lc.loginForm" ng-submit="lc.login(globals)" role="form" class="Registerform RegisterController" style="display: block;">
+						        <div class="form-group" ng-class="{ 'has-error': formSignin.userId.$dirty && formSignin.userId.$error.required }">
+						            <input type="text" name="userId" id="userId" class="form-control" ng-model="lc.userId" required placeholder="Username" />
+						            <span ng-show="formSignin.userId.$dirty && formSignin.userId.$error.required" class="help-block">Please enter valid username</span>
+						        </div>
+						        <div class="form-group" ng-class="{ 'has-error': formSignin.password.$dirty && formSignin.password.$error.required }">
+						            <input type="password" name="password" id="password" class="form-control" ng-model="lc.password" required placeholder="Password"/>
+						            <span ng-show="formSignin.password.$dirty && formSignin.password.$error.required" class="help-block">Please enter valid password</span>
+						        </div>
+						        <div class="form-actions">
+						            <button type="submit" ng-disabled="formSignin.$invalid || lc.dataLoading" class="signupbutton" style="text-align: center;">Sign In</button>
+						            <img ng-if="lc.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						        </div>
+						    </form>
+					    </div>
+				    </div>
+				</div>
+			</div>
+            </div>

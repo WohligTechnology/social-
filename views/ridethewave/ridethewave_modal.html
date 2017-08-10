@@ -1,0 +1,19 @@
+<section class="ridethewaveTab">
+<div class="loadingdata" ng-show="isloading"><div class="sirflogo">Sirf</div></div>
+    <div class="col-md-12 bgwhite" ng-show="!isloading">
+    	<div class="col-md-12 content favorites" ng-class="{'first-block':topicName =='trending'}"  style="padding-bottom: 10px;" ng-show="!isFavouriteEmpty">
+				<h4 class="content-title" style="text-transform: capitalize;text-align:center;margin-top: 40px;padding: 0px; margin-bottom: 20px;">Which of these topics interests you?</h4>
+			<ul class="ridethewaveContainer" style="margin-top: 0;">
+				<li ng-repeat="i in boardsModal" class="ridethewaveTopicContainer {{i.selected}}" topic_id="{{i.topic_id}}">
+					<div class="topicimgcontainer"><img src="{{i.imageLocation ? i.imageLocation : 'images/no_image.png'}}"  ng-click="selectTopic($event)"/></div>
+					<div class="topicdesccontainer" ng-click="selectTopic($event)"><div class="topicdesclabel">{{i.topic_Desc}}</div></div>
+				</li>
+			</ul>
+        </div>
+	</div>
+	<div class="form-actions saveridethewavebuttoncontainer">
+						            <button type="button" class="signupbutton" ng-click="saveRideTheWave()" style="text-align: center;">Let's Shred</button>
+						            <img ng-if="rc.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						        </div>
+</section>
+

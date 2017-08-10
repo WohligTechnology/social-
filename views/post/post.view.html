@@ -1,0 +1,146 @@
+<section class="postTab">
+	<div class="loadingdata" ng-show="isloading">
+		<div class="sirflogo">Sirf</div>
+	</div>
+	<div ng-show="!isloading && imageUpload">
+		<div class="col-md-12">
+			<div class="uploadButtons row">
+				<div class="col-md-3">
+					<button type="submit" class="btn btn-primary btn-block selected" ng-click="initImageUpload($event);">Image</button>
+				</div>
+				<div class="col-md-3">
+					<button type="submit" class="btn btn-primary btn-block" ng-click="initGifUpload($event);">GIF</button>
+				</div>
+				<div class="col-md-3">
+					<button type="submit" class="btn btn-primary btn-block" ng-click="initVideoUpload($event);">Video</button>
+				</div>
+				<div class="col-md-3">
+					<button type="submit" class="btn btn-primary btn-block" ng-click="initTextUpload($event);">Text</button>
+				</div>
+			</div>
+			<div class="uploadImageContainer row" ng-show="uploadImageContainer">
+				<div ngf-drop ngf-select ng-model="files" class="uploadImageBox" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+				    accept="image/jpeg" ngf-pattern="'image/jpeg'">
+					<div class="uploadImageBoxUploadImage">
+						<img src="images/upload_image_bg.png" />
+						<div class="uploadImageBoxLabel">drag & drop</div>
+					</div>
+				</div>
+				<div class="orLabel">Or</div>
+				<div class="uploadImageUrlBox">
+					<div class="uploadImageUrl">
+						<input type="text" name="files" ng-model="imagelinkInput" placeholder="paste image or url" /> <button type="button"
+						    class="btn btn-primary" ng-click="addLinkToText(imagelinkInput);">browse</button>
+						<div ng-show="errorLinkUpload" class="errorLinkUpload"><i class="fa fa-times" aria-hidden="true"></i> url error</div>
+					</div>
+				</div>
+			</div>
+			<div class="uploadGifContainer row" ng-show="uploadGifContainer">
+				<div ngf-drop ngf-select ng-model="files" class="uploadImageBox" ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
+				    accept="image/gif" ngf-pattern="'image/gif'">
+					<div class="uploadImageBoxUploadImage">
+						<img src="images/upload_image_bg.png" />
+						<div class="uploadImageBoxLabel">drag & drop GIF file</div>
+					</div>
+				</div>
+				<div class="orLabel">Or</div>
+				<div class="uploadImageUrlBox">
+					<div class="uploadImageUrl">
+						<input type="text" name="files" ng-model="gifimagelinkInput" placeholder="paste GIF link" /> <button type="button"
+						    class="btn btn-primary" ng-click="addLinkToText(gifimagelinkInput);">browse</button>
+						<div ng-show="errorLinkUpload" class="errorLinkUpload"><i class="fa fa-times" aria-hidden="true"></i> url error</div>
+					</div>
+				</div>
+			</div>
+			<div class="uploadVideoContainer row" ng-show="uploadVideoContainer">
+				<div class="uploadImageUrlBox">
+					<div class="uploadImageUrl">
+						<input type="text" name="files" ng-model="linkInput" placeholder="paste video url" /> <button type="button" class="btn btn-primary"
+						    ng-click="addLinkToText(linkInput);">add</button>
+						<div ng-show="errorLinkUpload" class="errorLinkUpload"><i class="fa fa-times" aria-hidden="true"></i> url error</div>
+					</div>
+				</div>
+			</div>
+			<div class="uploadTextContainer row" ng-show="uploadTextContainer">
+				<div class="uploadImageUrlBox">
+					<div class="uploadImageUrl">
+						<input type="text" name="files" ng-model="linkInput" placeholder="paste link url" /> <button type="button" class="btn btn-primary"
+						    ng-click="addLinkToText(linkInput);">add</button>
+						<div ng-show="errorLinkUpload" class="errorLinkUpload"><i class="fa fa-times" aria-hidden="true"></i> url error</div>
+						<div class="orLabel">Or</div>
+						<div><button type="button" class="btn btn-primary createtextpostbutton" ng-click="addLinkToText();">create a text post</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="step2 col-md-12" ng-show="step2">
+		<div class="col-md-8 leftSideCreatePost" style="padding-top:30px; max-height:{{middleContainer+230}}px; overflow:auto;">
+			<form name="formCreatePost" ng-submit="createPost()" role="form" style="display: block;">
+				<input ng-disabled="uploadTextContainer || uploadVideoContainer" type="hidden" name="linkURL" id="linkURL" ng-model="cp.post.linkURL"
+				    value="{{uploadedImagePath}}" />
+				<input type="hidden" name="permLink" id="permLink" ng-model="cp.post.permLink" value="{{cp.post.title | spaceless}}" />
+				<input type="hidden" name="thumbnail" id="thumbnail" ng-model="cp.post.thumbnail" value="{{uploadedImagePath}}" />
+				<input type="hidden" name="isPostPrivate" id="isPostPrivate" ng-model="cp.post.isPostPrivate" />
+				<div class="form-group" ng-class="{ 'has-error': formCreatePost.title.$dirty && (formCreatePost.title.$error.required) }">
+					<span class="mandatorySign"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+					<input type="text" name="title" id="title" class="form-control" ng-model="cp.post.title" required placeholder="title" />
+					<span ng-show="formCreatePost.title.$dirty && formCreatePost.title.$error.required" class="help-block">Please enter valid title</span>
+				</div>
+				<div class="form-group" ng-hide="uploadTextContainer || uploadVideoContainer">
+					<div class="uploadedImage">
+						<img src="{{uploadedImagePath ? uploadedImagePath : cp.post.linkURL}}" class="img-responsive" />
+						<div class="sortByContainer imageDropdown">
+							<ul class="nav navbar-nav navbar-right sortByDropDown">
+								<li class="dropdown">
+									<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+												<b class="caret"></b></a>
+									<ul class="dropdown-menu" style="top: 20px; right: 0px;">
+										<li><a href="javascript:void(0);" ng-click="isloading = false; imageUpload = true; step2 = false;">Edit Image</a></li>
+										<li><a href="javascript:void(0);" ng-click="deleteImage">Delete Image</a></li>
+										<!-- <li><a href="#">Oldest</a></li> -->
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div ng-show="uploadTextContainer || uploadVideoContainer" class="form-group" ng-class="{ 'has-error': formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url) }">
+					<input type="url" name="linkURL" id="linkURL" class="form-control {{cp.post.linkURL ? ng-valid : ''}}" ng-model="cp.post.linkURL"
+					    placeholder="link url" />
+					<span ng-show="formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url)" class="help-block">Please enter valid link url</span>
+				</div>
+
+				<div class="form-group" ng-class="{ 'has-error': formCreatePost.userId.$dirty && (formCreatePost.userId.$error.required) }">
+					<textarea type="text" width="100%" row="4" name="selfText" id="selfText" class="form-control {{cp.post.selfText ? ng-valid : ''}}"
+					    ng-model="cp.post.selfText" placeholder="text (optional)"></textarea>
+					<span ng-show="formCreatePost.selfText.$dirty && formCreatePost.selfText.$error.required" class="help-block">Please enter valid text</span>
+				</div>
+				<div class="add-post-data text-center"><a href=""><i class="fa fa-plus" aria-hidden="true"></i>add an image</a></div>
+
+				<div class="form-group" ng-class="{ 'has-error': formCreatePost.userId.$dirty && (formCreatePost.userId.$error.required) }">
+					<span class="mandatorySign"><i class="fa fa-asterisk" aria-hidden="true"></i></span>
+					<select name="board" id="board" class="form-control" ng-model="cp.post.board" placeholder="choose a board" required>
+						            	<option value="">choose a board</option>
+						            	<option ng-repeat="i in boards" value="{{i.topic_Name}}">{{i.topic_Desc}}</option>
+						            </select>
+				</div>
+				<div class="form-group" ng-class="{ 'has-error': formCreatePost.tag.$dirty && (formCreatePost.tag.$error.required) }">
+					<input type="text" name="tag" id="tag" class="form-control {{cp.post.tag ? ng-valid : ''}}" ng-model="cp.post.tag" placeholder="add tags"
+					/>
+					<span ng-show="formCreatePost.tag.$dirty && formCreatePost.tag.$error.required" class="help-block">Please enter valid tag</span>
+				</div>
+				<div class="form-actions">
+					<button type="button" class="signupbutton cancelbuttonColor" ng-click="cancelCreatePost();" style="text-align: center;">Cancel</button>
+					<button type="button" ng-disabled="formCreatePost.$invalid || rc.dataLoading" class="signupbutton" ng-click="createPost()"
+					    style="text-align: center;">Submit Post</button>
+					<img ng-if="rc.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+					/>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-4 rightSideCreatePost" style="padding-top:30px; min-height:{{middleContainer-10}}px;">
+			<span ng-click="changePrivacy();" class="postPrivately {{isSelected ? 'selected' : ''}}"><i class="fa fa-check" aria-hidden="true" ng-show="isSelected"></i> Post Privately</span>
+		</div>
+	</div>
+</section>

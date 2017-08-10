@@ -1,0 +1,108 @@
+<div class="loadingdata" ng-show="isloading"><div class="sirflogo">Sirf</div></div>
+<script type="text/ng-template" id="favoritestpl.html">
+				<a class="topiclistimage 123" href="#/favorites/{{userDetails.user_Id}}/{{i.favouriteName}}" ng-style="{'background-image':'{{(i.imageLocation == 'default' || i.imageLocation == null || i.imageLocation == '' || i.imageLocation == 'self' || !i.imageLocation) ? 'url(images/no_image.png)' : 'url('+i.imageLocation+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.favouriteName}}" style="text-align:center">{{i.favouriteName}}</div>
+				<span class="lockicon" ng-show="i.isPrivate"><img src="images/icon_lock.png" /></span>
+				</a>
+				<a href="javascript:void(0);" class="removefavicon removefaviconclick" favname="{{i.favouriteName}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+		<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="closeModal()">&times;</button>
+                <div class="modal-title title"><div class="customtitleCover"><h3>Create New Category</h3></div></div>
+            </div>
+            <div class="modal-body">
+            <div class="CategoryController">
+            <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+                <div class="col-md-12">
+                	<div class="col-md-6">
+                		<div>
+                			<div id="crop-cover-image">
+
+    <!-- Current avatar -->
+    <div class="avatar-cover-view" title="Add cover image">
+      <span>
+      	<img src="images/no_cover_photo.png" width="200" height="130" alt="cover Photo" class="coverPhoto" ng-hide="isCoverImageEmpty"/>
+      </span>
+    </div>
+    <div class="coverImageLabel">cover image</div>
+
+    <!-- Cropping modal -->
+    <div class="modal1 fade" id="avatar-modal-cover" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form class="avatar-form avatar-form-category" action="http://localhost:9090/cropper-master/examples/crop-avatar/crop.php" enctype="multipart/form-data" method="post">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" id="avatar-modal-label-profile">Change Cover Photo for Category</h4>
+            </div>
+            <div class="modal-body">
+              <div class="avatar-body">
+                <div class="avatar-upload-cover">
+                  <input type="hidden" class="fileName" name="fileName">
+                  <input type="hidden" class="imageType" name="imageType" value="category">
+                  <input type="hidden" class="xCoordinate" name="xCoordinate">
+                  <input type="hidden" class="yCoordinate" name="yCoordinate">
+                  <input type="hidden" class="width" name="width">
+                  <input type="hidden" class="height" name="height">
+                  <label for="upload-photo-cover" class="btn btn-info"><i class="fa fa-upload" aria-hidden="true"></i> Choose photo...</label>
+<input type="file" name="document" class="avatar-input" id="upload-photo-cover" />
+                </div>
+
+                <!-- Crop and preview -->
+                <div class="row">
+                    <div class="avatar-wrapper-cover"></div>
+                    <div class="avatar-preview-cover preview-lg" style="display:none;"></div>
+                </div>
+                <div class="row avatar-btns">
+                  <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary btn-block avatar-save" ng-disabled="isNotValidUpload">Done</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+          </form>
+        </div>
+      </div>
+    </div><!-- /.modal -->
+
+    <!-- Loading state -->
+    <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+    <div class="form-actions">
+						            <button type="button" class="signupbutton cancelcategorybutton" ng-click="closeModal();" style="text-align: center;">Cancel</button>
+	</div>
+  </div>
+
+                			
+					    </div>
+				    </div>
+				    <div class="col-md-6">
+				    <form name="formCreateCategory" ng-model="cc.formCreateCategory" ng-submit="cc.formCreateCategory(globals)" role="form" class="formCreateCategory" style="display: block;">
+				    <input type="hidden" ng-model="cc.favourites.image" class="cc-favourites-image">
+				    	<div>
+						        <div class="form-group" ng-class="{ 'has-error': formCreateCategory.favouriteName.$dirty && (formCreateCategory.favouriteName.$error.required || formCreateCategory.favouriteName.$error.maxlength) }">
+						            <input type="text" name="favouriteName" id="favouriteName" class="form-control" ng-maxlength="100" ng-minlength="1" ng-model="cc.favourites.favouriteName" required placeholder="category name" />
+						            <span ng-show="formCreateCategory.favouriteName.$dirty && formCreateCategory.favouriteName.$error.required" class="help-block">Please enter valid category name</span>
+						            <span ng-if="formCreateCategory.favouriteName.$dirty && formCreateCategory.favouriteName.$error.maxlength" class="help-block">Not more than 100 characters </span>
+						        </div>
+						        <label class="form-check-label">
+							      <input type="checkbox" name="isPrivate" id="isPrivate" class="form-check-input" ng-model="cc.favourites.isPrivate"> keep private
+							    </label>
+						        <div class="form-actions">
+						            <button type="submit" ng-disabled="formCreateCategory.$invalid || cc.dataLoading" class="signupbutton createcategorybutton" style="text-align: center;">Create</button>
+						            <img ng-if="cc.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+						        </div>
+					    </div>
+					 </form>
+				    </div>
+				</div>
+			</div>
+            </div>

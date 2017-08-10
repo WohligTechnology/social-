@@ -1,0 +1,28 @@
+<section>
+            <script type="text/ng-template" id="tpl.html">
+				<a class="topiclistimage" href="#/{{topicName}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}" style="background-image:url({{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'images/no_image.png':i.subReddit_Thumbnail}});">
+				<div class="ellipsis titleLabel" title="{{i.subReddit_Title}}">{{i.subReddit_Title}}</div>
+				</a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+        <div class="col-md-12 row-block content" ng-class="{'first-block':topicName =='trending'}"  style="padding-top: 67px; padding-bottom: 10px;">
+				<h4 class="content-title" style="text-transform: capitalize;">{{topicName}} <span class="pull-right closeLink"><a href="#/" title=""><i class="fa fa-times" aria-hidden="true"></i></a></span></h4>
+			<ul class="ng-isolate-scope slick-initialized slick-slider slick-dotted" style="margin-top: 0;">
+				<li ng-repeat="i in topics" class="ng-scope slick-slide slick-active" data-enabled="false" data-slick-index="1" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide11" style="width: 216px;">
+					<div>
+						<div class="" ng-include="'tpl.html'"></div>
+					</div>
+				</li>
+			</ul>
+        </div>
+		<div class="col-md-12 nexturlpan text-center" ng-click="nextPosts();">
+			<span ng-if="!topics.slickConfig1Loaded"><i class="icon-spinner icon-spin icon-2x"></i></span>
+			<a href="javascript:void(0);" class="nextLink" ng-if="topics.slickConfig1Loaded"> <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+		</div>
+</section>
+

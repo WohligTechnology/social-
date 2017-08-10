@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <Resource name="jdbc/Sirf"
+            auth="Container"
+            type="javax.sql.DataSource"
+            username="sirf"
+            password="Sirf@1234"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="http://59.163.47.61/sirf"
+            maxActive="50" 
+            maxIdle="30" 
+            maxWait="10000"
+            maxTotal="8"/>
+</Context>

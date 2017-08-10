@@ -1,0 +1,251 @@
+<section class="myProfileTab">
+  <div class="loadingdata" ng-show="isloading">
+    <div class="sirflogo">Sirf</div>
+  </div>
+  <div ng-show="!isloading">
+    <div id="crop-avatar">
+
+      <!-- Current avatar -->
+      <div class="avatar-view" title="Change the cover photo">
+        <span>
+      	<img src="images/no_cover_photo.png" alt="Cover Photo" class="noCoverPhoto" ng-show="isCoverPhotoEmpty">
+      	<img src="{{userPageDataMyProfile['User Info'].backgroundImage}}" alt="Cover Photo" class="coverPhoto" ng-hide="isCoverPhotoEmpty">
+      	<span><img src="images/cover_photo_edit.png" alt="Cover Photo" class="coverPhotoEdit" ng-hide="isCoverPhotoEmpty"></span>
+        </span>
+      </div>
+
+      <!-- Cropping modal -->
+      <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <form class="avatar-form" action="#/service/sirfUser/upload" enctype="multipart/form-data" method="post">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="avatar-modal-label">Change Cover Photo</h4>
+              </div>
+              <div class="modal-body">
+                <div class="avatar-body">
+                  <div class="avatar-upload">
+                    <input type="hidden" class="fileName" name="fileName">
+                    <input type="hidden" class="imageType" name="imageType" value="background">
+                    <input type="hidden" class="xCoordinate" name="xCoordinate">
+                    <input type="hidden" class="yCoordinate" name="yCoordinate">
+                    <input type="hidden" class="width" name="width">
+                    <input type="hidden" class="height" name="height">
+                    <label for="upload-photo" class="btn btn-info"><i class="fa fa-upload" aria-hidden="true"></i> Choose photo...</label>
+                    <input type="file" name="document" class="avatar-input" id="upload-photo" />
+                  </div>
+
+                  <!-- Crop and preview -->
+                  <div class="row">
+                    <div class="avatar-wrapper"></div>
+                    <div class="avatar-preview preview-lg" style="display:none;"></div>
+                  </div>
+                  <div class="row avatar-btns">
+                    <div class="col-md-3">
+                      <button type="submit" class="btn btn-primary btn-block avatar-save" ng-disabled="isNotValidUpload">Done</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal -->
+
+      <!-- Loading state -->
+      <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+    </div>
+
+    <div id="crop-avatar-profile">
+
+      <!-- Current avatar -->
+      <div class="avatar-profile-view" title="Change the profile photo">
+        <span>
+      	<img src="images/no_profile_photo.png" alt="Profile Photo" class="noProfilePhoto" ng-show="isProfilePhotoEmpty">
+      	<img src="{{userPageDataMyProfile['User Info'].profileImage}}" alt="Profile Photo" class="profilePhoto" ng-hide="isProfilePhotoEmpty">
+      	<span><img src="images/cover_photo_edit.png" alt="Profile Photo" class="profilePhotoEdit"></span>
+        </span>
+      </div>
+      <div class="userShortDetails">
+        <div class="userName">{{userPageDataMyProfile['User Info'].userID}}</div>
+        <div class="userRating">{{userPageDataMyProfile['User Info'].userPoint}}pts Noob</div>
+        <div class="userSubscribers">{{userPageDataMyProfile['User Info'].subscriptionCount}} Subscribers</div>
+      </div>
+
+      <!-- Cropping modal -->
+      <div class="modal1 fade" id="avatar-modal-profile" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog"
+        tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <form class="avatar-form avatar-form-profile" action="http://localhost:9090/cropper-master/examples/crop-avatar/crop.php"
+              enctype="multipart/form-data" method="post">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="avatar-modal-label-profile">Change Profile Photo</h4>
+              </div>
+              <div class="modal-body">
+                <div class="avatar-body">
+                  <div class="avatar-upload-profile">
+                    <input type="hidden" class="fileName" name="fileName">
+                    <input type="hidden" class="imageType" name="imageType" value="profile">
+                    <input type="hidden" class="xCoordinate" name="xCoordinate">
+                    <input type="hidden" class="yCoordinate" name="yCoordinate">
+                    <input type="hidden" class="width" name="width">
+                    <input type="hidden" class="height" name="height">
+                    <label for="upload-photo-profile" class="btn btn-info"><i class="fa fa-upload" aria-hidden="true"></i> Choose photo...</label>
+                    <input type="file" name="document" class="avatar-input" id="upload-photo-profile" />
+                  </div>
+
+                  <!-- Crop and preview -->
+                  <div class="row">
+                    <div class="avatar-wrapper-profile"></div>
+                    <div class="avatar-preview-profile preview-lg" style="display:none;"></div>
+                  </div>
+                  <div class="row avatar-btns">
+                    <div class="col-md-3">
+                      <button type="submit" class="btn btn-primary btn-block avatar-save" ng-disabled="isNotValidUpload">Done</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div> -->
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal -->
+
+      <!-- Loading state -->
+      <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
+    </div>
+
+
+
+    <script type="text/ng-template" id="myPosttpl.html">
+				<a class="topiclistimage" href="#/details/{{i.subReddit_topic}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/myPost/{{userPageDataMyProfile['User Info'].userID}}/0/{{$index}}/0" style="background-image:url({{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'images/no_image.png':i.subReddit_Thumbnail}});">
+				<div class="ellipsis titleLabel" title="{{i.subReddit_Title}}">{{i.subReddit_Title}}</div>
+				<span class="lockicon" ng-show="i._Post_Private"><img src="images/icon_lock.png" /></span>
+				</a>
+				<span class="removeicon" ng-click="removePost(i.subReddit_ID, $event)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+    <script type="text/ng-template" id="favoritestpl.html"> 
+				<a class="topiclistimage" href="#/favorites/{{userPageDataMyProfile['User Info'].userID}}/{{i.favouriteName}}" ng-style="{'background-image':'{{(i.imageLocation == 'default' || i.imageLocation == null || i.imageLocation == '' || i.imageLocation == 'self' || !i.imageLocation) ? 'url(images/no_image.png)' : 'url('+i.imageLocation+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.favouriteName}}" style="text-align:center">{{i.favouriteName}}</div>
+				<span class="lockicon" ng-show="i.private"><img src="images/icon_lock.png" /></span>
+				</a>
+				<span class="removefavicon" ng-click="removeFavourite(i.favouriteName, $event)"><i class="fa fa-trash" aria-hidden="true"></i></span>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+    <script type="text/ng-template" id="subscribedtpl.html">
+				<a class="topiclistimage" href="#/profile/{{i.subscriber_id}}" ng-style="{'background-image':'{{(i.profile_image_path == 'default' || i.profile_image_path == null || i.profile_image_path == '' || i.profile_image_path == 'self' || !i.profile_image_path) ? 'url(images/no_image.png)' : 'url('+i.profile_image_path+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.subscriber_id}}">{{i.subscriber_id}}</div>
+				</a>
+				<span class="removefavicon" ng-click="unsubscribeuser(i.subscriber_id, $event)" title="Unsubscribe"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+    <div>
+
+      <div class="col-md-12 row-block content slickrow mypost" style="margin-top: 0;">
+        <a href="#/mypost/{{userPageDataMyProfile['User Info'].userID}}">
+          <h4 class="content-title"><span ng-if="slickConfig1Loading" style="text-align:center; position: absolute;left: -28px;margin-top: -4px;font-size: 14px;"><i class="icon-spinner icon-spin icon-2x"></i></span>My
+            Post
+          </h4>
+        </a>
+        <div id="{{mypostopen}}">
+          <slick settings=slickConfigmypost ng-show="userPageData['My Post'].length > 0">
+            <div ng-repeat="i in userPageDataMyProfile['My Post']" style="margin-top:13px; position:relative; " class="postngrepeat ">
+              <div class=" " ng-include=" 'myPosttpl.html' "></div>
+              <div class="loadingdataoverlay " ng-show="isloadingremovePost ">
+                <div class="loadingdata ">
+                  <div class="sirflogo ">Sirf</div>
+                </div>
+              </div>
+            </div>
+          </slick>
+          <div ng-show="isPostEmpty " class="col-md-12 noUserData ">
+            <div class="noUserDataLabel ">No Posts</div>
+            <div class="noUserDataAddLink "><a href="#/post/create ">Create a Post</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row-block content slickrow favorites ">
+        <a href="#/favorites/{{userPageDataMyProfile[ 'User Info'].userID}} ">
+          <h4 class="content-title "><span ng-if="slickConfig1Loading " style="text-align:center; position: absolute;left: -28px;margin-top:
+              -4px;font-size: 14px; "><i class="icon-spinner icon-spin icon-2x "></i></span>Favorite <a href="javascript:void(0);
+              " data-toggle="dropdown " oc-modal-open="{url: 'views/favorites/category/category.view.html', cls: 'favorites', controller:
+              'CategoryController as cc'} " class="addposticon "><i class="fa fa-plus " aria-hidden="true "></i>
+              </a>
+          </h4>
+        </a>
+        <div id="{{favoritesopen}} ">
+          <slick settings=slickConfigfavorites ng-show="!isFavouriteEmpty ">
+            <div ng-repeat="i in userPageDataMyProfile[ 'Favourite'] " style="margin-top:13px; position:relative; " class="favoritesngrepeat ">
+              <div class=" " ng-include=" 'favoritestpl.html' "></div>
+              <div class="loadingdataoverlay " ng-show="isloadingremoveFavourite ">
+                <div class="loadingdata ">
+                  <div class="sirflogo ">Sirf</div>
+                </div>
+              </div>
+            </div>
+          </slick>
+          <div ng-show="isFavouriteEmpty " class="col-md-12 noUserData ">
+            <div class="noUserDataLabel ">No Favorites</div>
+            <div class="noUserDataAddLink "><a href="javascript:void(0); " data-toggle="dropdown " oc-modal-open="{url:
+              'views/favorites/category/category.view.html', cls: 'favorites', controller: 'CategoryController as cc'} ">Add a Favorite Category</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row-block content slickrow subscribed ">
+        <a href="#/subscribe/{{userPageDataMyProfile[ 'User Info'].userID}} ">
+          <h4 class="content-title "><span ng-if="slickConfig1Loading " style="text-align:center; position: absolute;left:
+              -28px;margin-top: -4px;font-size: 14px; "><i class="icon-spinner icon-spin icon-2x "></i></span>Subscribe</h4>
+        </a>
+        <div id="{{subscribedopen}} ">
+
+          <slick settings=slickConfigsubscribed ng-show="userPageData[ 'Subscribe'].length> 0 || isSubscriber">
+            <div ng-repeat="i in userPageDataMyProfile['Subscribe']" style="margin-top:13px; position:relative; " class="subscribengrepeat ">
+              <div class=" " ng-include=" 'subscribedtpl.html' "></div>
+              <div class="loadingdataoverlay " ng-show="isloadingremoveFavourite ">
+                <div class="loadingdata ">
+                  <div class="sirflogo ">Sirf</div>
+                </div>
+              </div>
+            </div>
+          </slick>
+          <div ng-show="userPageData[ 'Subscribe'].length==0 || isSubscriber " class="col-md-12 noUserData ">
+            <div class="noUserDataLabel ">No Subscriptions</div>
+            <!-- 						<div class="noUserDataAddLink "><a href="javascript:$( '.form-control.searchbox').attr( 'placeholder',
+              'Search user').val( '').trigger( 'focus');$( '.form-control.searchbox').bind( 'blur', function(){$(this).attr(
+              'placeholder', 'Search')}); " onclick=" ">Search a user to subscribe</a></div> -->
+            <div class="noUserDataAddLink "><a href="javascript:void(0); " onclick="$( '.form-control.searchbox').attr(
+              'placeholder', 'Search user').val( '').trigger( 'focus');$( '.form-control.searchbox').bind( 'blur', function(){$(this).attr(
+              'placeholder', 'Search')}); " onclick=" ">Search a user to subscribe</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

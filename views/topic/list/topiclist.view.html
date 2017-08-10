@@ -1,0 +1,84 @@
+<section>
+<!--  List View  -->            
+            <script type="text/ng-template" id="tpllist.html">
+				<div class="listviewtemp">
+					<div class="listviewtempimg">
+						<a class="topiclistimage" href="#/details/{{topicName}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/0/0/0/{{$index}}/{{sortType?sortType:0}}/" ng-style="{'background-image':'{{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'url(images/no_image.png)' : 'url('+i.subReddit_Thumbnail+')'}}'}">
+						</a>
+					</div>
+					<div class="listviewtemptitel">
+						<a href="#/details/{{topicName}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/0/0/0/{{$index}}/{{sortType?sortType:0}}/" ng-style="{'background-image':'{{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'url(images/no_image.png)' : 'url('+i.subReddit_Thumbnail+')'}}'}">
+							<div class="ellipsis titleLabel" title="{{i.subReddit_Title}}">{{i.subReddit_Title}}</div>
+						</a>
+					</div>
+				</div>
+				<div class="listviewtemp-home-views-pan">
+					<a href="#/details/{{topicName}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/0/0/0/{{$index}}/{{sortType?sortType:0}}/" >
+						{{i.commentsCount}} comments
+					</a>
+						<span class="listviewtemp-share">share</span>
+						<span class="listviewtemp-save">save</span>
+						<span class="listviewtemp-hide">hide</span>
+				</div>
+            </script>
+        <div class="col-md-12 content ListViewBackground" ng-show="isListView">
+				<h4 class="content-title" style="text-transform: capitalize;">{{topicDesc}} 
+					<span class="pull-right closeLink"><a href="#/" title=""><i class="fa fa-times" aria-hidden="true"></i></a></span>
+					<span class="pull-right listviewicon"><a href="javascript:void(0)" ng-click="changeView(true);" title=""><i class="fa  fa-th-list" aria-hidden="true"></i></a></span>
+					<span class="pull-right girdviewicon"><a href="javascript:void(0)" ng-click="changeView(false);" title=""><i class="fa  fa-th-large" aria-hidden="true"></i></a></span>
+				</h4>
+			<div class="col-md-8">
+				<ul class="listviewtemp-slide" style="margin-top: 0;">
+					<li ng-repeat="i in topics" class="ng-scope listviewtemp-slick-slide" data-enabled="false" data-slick-index="1" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide11" style="width: 120px;">
+						<div>
+							<div class="" ng-include="'tpllist.html'"></div>
+						</div>
+					</li>
+				</ul>
+				<div class="col-md-12 nexturlpan text-center" ng-click="nextPosts();" ng-hide="!isNextAvailable">
+					<div class="loadingdata" ng-show="!topics.slickConfig1Loaded"><div class="sirflogo">Sirf</div></div>
+					<a href="javascript:void(0);" class="nextLink" ng-if="topics.slickConfig1Loaded"> <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+				</div>
+			</div>
+			<div class="col-md-4 boardcontainer">
+				<h3>Boards you might like...</h3>
+				<div>
+					<ul class="boardcontainerUL">
+						<li class="boardcontainerLI" ng-click="openLink(boards.topic_id, boards.topic_Name);" ng-if="boards.topic_Name != topicName" ng-repeat="boards in boardsList" ng-style="{'background-image':'{{boards.imageLocation == null ? 'url(images/no_image.png)' : 'url('+boards.imageLocation+')'}}'}"><span class="boardLabel">{{boards.topic_Desc}}</span></li>
+					</ul>
+				</div>
+			</div>
+        </div>
+                    
+<!--  Grid View  -->            
+            <script type="text/ng-template" id="tpl.html">
+				<a class="topiclistimage" href="#/details/{{topicName}}/{{i.subReddit_ID}}/{{getPerm(i.subReddit_Permalink)}}/0/0/0/{{$index}}/{{sortType?sortType:0}}/" ng-style="{'background-image':'{{(i.subReddit_Thumbnail == 'default' || i.subReddit_Thumbnail == null || i.subReddit_Thumbnail == '' || i.subReddit_Thumbnail == 'self' || !i.subReddit_Thumbnail) ? 'url(images/no_image.png)' : 'url('+i.subReddit_Thumbnail+')'}}'}">
+				<div class="ellipsis titleLabel" title="{{i.subReddit_Title}}">{{i.subReddit_Title}}</div>
+				</a>
+				<div class="home-views-pan">
+					<div>
+						<i class="fa fa-arrow-up" aria-hidden="true"></i><i class="fa fa-arrow-down" aria-hidden="true"></i>
+						<div class="pull-right">{{i.viewsCount}} views</div>
+					</div>
+				</div>
+            </script>
+        <div class="col-md-12 content" ng-show="!isListView" ng-class="{'first-block':topicName =='trending'}">
+				<h4 class="content-title" style="text-transform: capitalize;">{{topicDesc}} 
+					<span class="pull-right closeLink"><a href="#/" title=""><i class="fa fa-times" aria-hidden="true"></i></a></span>
+					<span class="pull-right listviewicon"><a href="javascript:void(0)" ng-click="changeView(true);" title=""><i class="fa  fa-th-list" aria-hidden="true"></i></a></span>
+					<span class="pull-right girdviewicon"><a href="javascript:void(0)" ng-click="changeView(false);" title=""><i class="fa  fa-th-large" aria-hidden="true"></i></a></span>
+				</h4>
+			<ul class="slick-initialized" style="margin-top: 0;">
+				<li ng-repeat="i in topics" class="ng-scope slick-slide" data-enabled="false" data-slick-index="1" aria-hidden="false" tabindex="-1" role="option" aria-describedby="slick-slide11" style="width: 216px;">
+					<div>
+						<div class="" ng-include="'tpl.html'"></div>
+					</div>
+				</li>
+			</ul>
+			<div class="col-md-12 nexturlpan text-center" ng-click="nextPosts();" ng-hide="!isNextAvailable">
+				<div class="loadingdata" ng-show="!topics.slickConfig1Loaded"><div class="sirflogo">Sirf</div></div>
+				<a href="javascript:void(0);" class="nextLink" ng-if="topics.slickConfig1Loaded"> <i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+			</div>
+        </div>
+</section>
+

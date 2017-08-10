@@ -1,0 +1,128 @@
+<section class="detailsTab">
+<div class="loadingdata" ng-show="isloading"><div class="sirflogo">Sirf</div></div>
+    <div class="postContent col-md-12" ng-show="!isloading">
+    	<div class="row ridethewavebuttongroup">
+			<div class="prevbutton col-md-3">
+				<a  ng-if="currentData.prevSirfUrl" href="#/ridethewave/details/{{cat}}/{{prevUrl()}}/{{postType}}/{{userID}}/{{favouriteName}}/{{offset-1}}/{{sortType}}" class="col-md-12 prevRidetheWaveLink text-center" style="margin-top: 9px;"><i class="fa fa-chevron-left fa-2" aria-hidden="true"></i></a>
+			</div>
+			<div class="rideonbutton col-md-3" ng-if="currentData.nextSirfUrl">
+				<button type="button" class="signupbutton pull-right" ng-click="redirect('#/ridethewave/details/'+cat+'/'+nextUrl()+'/'+postType+'/'+userID+'/'+favouriteName+'/'+(offset+1)+'/'+sortType);" style="text-align: center;">Ride On</button>
+			</div>
+			<div class="editpostbutton col-md-3">
+				<button type="button" class="signupbutton pull-left" ng-click="redirect('#/ridethewave');" style="text-align: center;">Edit Topics</button>
+			</div>
+			<div class="nextbutton col-md-3">
+				<a  ng-if="currentData.nextSirfUrl" href="#/ridethewave/details/{{cat}}/{{nextUrl()}}/{{postType}}/{{userID}}/{{favouriteName}}/{{offset+1}}/{{sortType}}" class="col-md-12 nextRidetheWaveLink text-center pull-right" style="margin-top: 9px;"><i class="fa fa-chevron-right fa-2" aria-hidden="true"></i></a>
+			</div>
+		</div>
+		<div class="row row-block">
+			<div class="col-md-8">
+				<div class="postTitle">{{currentData.subReddit_Title}}</div>
+				<div class="authorScorePan">
+					<span class="authorNamePan">by <span class="authorName"><a href="#/profile/{{currentData.subReddit_author}}">{{currentData.subReddit_author}}</a></span> <span class="postCreatedpan">{{ currentData.subReddit_created | moment }}</span></span>
+					<span class="pull-right scoreviewsPan">{{viewsCount}} views</span>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="row" style="margin-left: 0px; padding-left: 0px; width: 100%; display: inline-flex;">
+					<div class="iconspan">
+						<a href="javascript:void(0);" ng-click="setUpVote();" class="setUpVote" ng-class="upVote_By_User > 0 ? 'upvoted' : ''"><i class="fa fa-arrow-up" aria-hidden="true"></i><div class="countcircle" ng-show="numOfUpvotes > 0"><span>{{numOfUpvotes}}</span></div></a>
+						<a href="javascript:void(0);" ng-click="setDownVote();" class="setDownVote" ng-class="downVote_By_User > 0 ? 'downvoted' : ''"><i class="fa fa-arrow-down" aria-hidden="true"></i><div class="countcircle" ng-show="numOfDownvotes > 0"><span>{{numOfDownvotes}}</span></div></a>
+						<span class="favoritesDropDown" ng-show="loginDetails.isLoggedIn">
+							<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-heart" aria-hidden="true"></i></a>
+							<ul class="dropdown-menu">
+								<li ng-show="userFavouriteList.length > 0" ng-repeat="i in userFavouriteList|limitTo:5"><a href="javascript:void(0);" ng-click="addToFavourite(i.favouriteName);">{{i.favouriteName}}</a></li>
+								<li ng-hide="userFavouriteList.length > 0" ><a href="javascript:void(0);" oc-modal-open="{url: 'views/favorites/category/category.view.html', cls: 'favorites', controller:'CategoryController as cc'}" >Set Up Favorites...</a></li>
+								<hr ng-show="userFavouriteList.length > 0">
+								<li ng-show="userFavouriteList.length > 0"><a href="javascript:void(0);" data-toggle="dropdown" oc-modal-open="{url: 'views/favorites/allcategories/allcategories.view.html', cls: 'allcategories', controller:'AllcategoriesController as ac'}" >Advanced Options...</a></li>
+							</ul>
+						</span>
+						<a href="javascript:void(0);" ng-click="isCommentFormOpen = !isCommentFormOpen; isCommentPosted = !isCommentPosted; commentsBody = ''; focusOnInput();"><i class="fa fa-pencil" aria-hidden="true" ng-show="!isReplyFormOpen"></i><i class="fa fa-pencil-square" aria-hidden="true" ng-show="isReplyFormOpen" style="color:#000"></i></a>
+						<a href="javascript:void(0);" class="pull-right"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
+					</div>
+				</div>
+				<div ng-show="isCommentPostedSuccess" class="commentmessage">
+					Your comment is posted.
+				</div>
+				<div class="commentSortPan">
+					<span class="commentsCount">{{commentsCount}} comments</span>
+					<span class="pull-right sortDropdownPan">
+						<ul class="nav navbar-nav navbar-right">
+						  <li class="dropdown">
+							<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">First <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+							  <li><a href="#/">New</a></li>
+							  <li><a href="#/">Most Liked</a></li>
+							</ul>
+						  </li>
+						</ul>
+					</span>
+				</div>
+			</div>
+			
+			<div class="col-md-8 postContentContainer">
+				<div class="mainContent">
+					<div ng-show="!currentData.subReddit_selfTextHtml" id="redditContainer">
+						<embed-video ng-if="!currentData.subReddit_selfTextHtml" ng-href="{{subReddit_url}}" on-change="videoSelected(videoId, provider)" ng-show="isVideo" width="100%" height="100%"></embed-video>
+						<div class="iframeContainer" id="iframeContainer" style="text-align: center;"><div id="console"></div></div>
+						<div class="spinnerContainer"></div>
+					</div>
+					<div ng-show="currentData.subReddit_selfTextHtml" style="width:100%; height:100%;" id="sirfContainer">
+						<div class="selfImage" ng-show="isURLImage"><img src="{{currentData.subReddit_url}}" /></div>
+						<div ng-show="!isURLImage" style="width:100%;">
+						<embed-video ng-if="currentData.subReddit_selfTextHtml" ng-href="{{subReddit_url}}" on-change="videoSelected(videoId, provider)" ng-show="isVideo" width="100%" height="100%"></embed-video>
+						<div class="iframeContainer" id="iframeContainer" style="text-align: center;"><div id="console"></div></div>
+						<div class="spinnerContainer"></div>
+						</div>
+						<div class="selfText" ng-bind-html="renderHtml(currentData.subReddit_selfTextHtml)"></div>
+					</div>
+				</div>
+				<div class="postContentExpander" title="Expend/Collapse Content View">
+					<i class="fa fa-angle-double-right" aria-hidden="true"></i>
+				</div>
+			</div>
+			<div class="col-md-4 postCommentContainer">
+				<div ng-show="isCommentFormOpen" ng-hide="isCommentPosted" class="commenttextBoxContent">
+					<form name="commentNreply">
+						<input type="hidden" class="parentcommentID" value="">
+						<textarea ng-keyup="autoExpand($event)" id="commentsBody" name="commentsBody" class="col-md-12 commenttextBox" placeholder="Write a comment" ng-model="commentsBody" ng-trim="false" maxlength="140" required focus-me="shouldBeOpen"></textarea>
+						<span>{{140 - commentsBody.length}} characters</span> <span><button class="postButton pull-right" ng-click="commentPost(commentsBody, $event)" ng-disabled="commentNreply.$invalid">Post</button></span>
+					</form>
+				</div>
+				<script type="text/ng-template" id="tpl.html">
+					<div>
+						<div class="col-md-4 currentAuthor">{{i.sirfComment_author}}</div>
+						<div class="col-md-5 currentCreated">{{i.sirfComment_creationdate | moment}}</div>
+						<div class="col-md-2 currentPts">{{i.sirfComment_score}}pts</div>
+						<div class="col-md-1 currentPts"><i class="fa fa-ellipsis-h fa-lg" aria-hidden="true"></i></div>
+					</div>
+					<div class="col-md-12 currentComment">
+						{{i.sirfComment_body}}
+					</div>
+					<div class="replyLinkRow">
+						<div class="col-md-5 currentRepliesCount">
+						<span ng-if="i.sirfComments_RepliesListCount"><a href="javascript:void(0);" ng-click="expandReply($event)">+{{i.sirfComments_RepliesListCount}} replies  <span class="hideText pull-right">Hide </span></a></span><span ng-if="!i.sirfComments_RepliesListCount">no replies</span></div>
+						<div class="col-md-3"><a href  ng-click="isReplyFormOpen = !isReplyFormOpen; commentsBody = ''; focusOnReplyInput();">Reply</a></div>
+						<div class="col-md-3 currentVote"><a href="javascript:void(0);"><i class="fa fa-arrow-down pull-right" aria-hidden="true"></i></a> <a href="javascript:void(0);"><i class="fa fa-arrow-up pull-right" aria-hidden="true"></i></a></div>
+					</div>
+					<div ng-show="isReplyFormOpen" class="commenttextBoxContent">
+						<form name="commentNreply">
+							<input type="hidden" class="parentcommentID" value="{{i.sirfComment_ID}}">
+							<textarea ng-keyup="autoExpand($event)" id="commentsBody" name="commentsBody" class="col-md-12 commenttextBox" placeholder="Write a comment" ng-model="commentsBody" ng-trim="false" maxlength="140" required focus-me="shouldBeReplyOpen"></textarea>
+							<span style="display:block; clear:both;">{{140 - commentsBody.length}} characters</span> <span><button class="postButton pull-right" ng-click="commentPost(commentsBody, $event)" ng-disabled="commentNreply.$invalid">Post</button></span>
+						</form>
+					</div>
+					<div class="replyRow" ng-repeat="i in i.sirfComments_RepliesList | toArray | orderBy:sirfComment_ID:true">
+						<div class="repliesBox" ng-include="'tpl.html'"></div>
+					</div>
+				</script>
+				<div class="commentPan" ng-if="currentPostLoaded">
+					<div class="commentBox" ng-repeat="i in comments | toArray | orderBy:sirfComment_ID:true">
+						<div class="" ng-include="'tpl.html'"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
