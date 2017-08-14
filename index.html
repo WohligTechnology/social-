@@ -87,10 +87,17 @@
 
 
 						</div>
-						<div class="pull-right addPostLink">
+						<div class="pull-right addPostLink" ng-if="!loginDetails.isLoggedIn">
 							<a class="anchorLink" ng-class="loginDetails.isLoggedInClass" oc-modal-open="{url: 'views/register/register.view.html', cls: 'slit', controller:'SignInUpController as vm'}"><i class="fa fa-plus" style="font-size: 18px; line-height: 42px;" aria-hidden="true"></i></a>
+
 							<!--<a class="anchorLink " href="#/post/create"><i class="fa fa-plus" style="font-size: 18px; line-height: 42px;" aria-hidden="true"></i></a>-->
 						</div>
+						<div class="pull-right addPostLink" ng-if="loginDetails.isLoggedIn">
+
+							<a class="anchorLink" class="isLoggedInFalse" href="#/post/create" ng-show="loginDetails.isLoggedIn"><i class="fa fa-plus" style="font-size: 18px; line-height: 42px;" aria-hidden="true"></i></a>
+							<!--<a class="anchorLink " href="#/post/create"><i class="fa fa-plus" style="font-size: 18px; line-height: 42px;" aria-hidden="true"></i></a>-->
+						</div>
+
 					</div>
 				</div>
 			</div>

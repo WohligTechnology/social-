@@ -112,7 +112,7 @@
         }
 
         function ClearCredentials() {
-            $http.post('service/sirfUser/signoutUser', {
+            $http.post('http://59.163.47.61/service/sirfUser/signoutUser', {
                     "currentUserId": $rootScope.userDetails.user_Id
                 })
                 .success(function (response) {

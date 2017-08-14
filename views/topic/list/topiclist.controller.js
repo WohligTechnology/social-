@@ -63,7 +63,7 @@
 			//var fullurl = 'service/sirf/pages?topicid='+topics+'&limit='+limit+'&offset='+offset;
 			var fullurl = 'http://59.163.47.61/service/sirf/pages?categoryLimit=' + categoryLimit + '&categoryOffset=' + categoryOffset + '&sortType=' + $scope.sortType + '&limit=' + limit + '&offset=' + offset;
 			$http.get(fullurl).success(function (data) {
-				var fullurlboards = 'service/sirf/getTopicMaster?categoryLoadType=ALL';
+				var fullurlboards = 'http://59.163.47.61/service/sirf/getTopicMaster?categoryLoadType=ALL';
 				$http.get(fullurlboards).success(function (boardsdata) {
 					if (boardsdata.statusCode == 1) {
 						$scope.boardsList = boardsdata.topicMasterList;

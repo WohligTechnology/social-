@@ -880,7 +880,7 @@ function run($rootScope, $location, $cookies, $http, $scope) {
 			$rootScope.loginDetails.isLoggedInClass = 'isLoggedInFalse';
 			$rootScope.loginDetails.isLoggedInProfileClass = 'isLoggedInProfileClassFalse';
 		}
-		console.log(restrictedPage + '&&' + loggedIn);
+		console.log(restrictedPage + '&&' + $rootScope.loginDetails.isLoggedIn);
 		if (restrictedPage && !loggedIn) {
 			$location.path('/');
 		}

@@ -87,36 +87,38 @@
 					<input type="text" name="title" id="title" class="form-control" ng-model="cp.post.title" required placeholder="title" />
 					<span ng-show="formCreatePost.title.$dirty && formCreatePost.title.$error.required" class="help-block">Please enter valid title</span>
 				</div>
-				<div class="form-group" ng-hide="uploadTextContainer || uploadVideoContainer">
-					<div class="uploadedImage">
-						<img src="{{uploadedImagePath ? uploadedImagePath : cp.post.linkURL}}" class="img-responsive" />
-						<div class="sortByContainer imageDropdown">
-							<ul class="nav navbar-nav navbar-right sortByDropDown">
-								<li class="dropdown">
-									<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+				<section ng-repeat="img in moreImage">
+					<div class="form-group" ng-hide="uploadTextContainer || uploadVideoContainer">
+						<div class="uploadedImage">
+							<img src="{{uploadedImagePath ? uploadedImagePath : cp.post.linkURL}}" class="img-responsive" />
+							<div class="sortByContainer imageDropdown">
+								<ul class="nav navbar-nav navbar-right sortByDropDown">
+									<li class="dropdown">
+										<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
 												<b class="caret"></b></a>
-									<ul class="dropdown-menu" style="top: 20px; right: 0px;">
-										<li><a href="javascript:void(0);" ng-click="isloading = false; imageUpload = true; step2 = false;">Edit Image</a></li>
-										<li><a href="javascript:void(0);" ng-click="deleteImage">Delete Image</a></li>
-										<!-- <li><a href="#">Oldest</a></li> -->
-									</ul>
-								</li>
-							</ul>
+										<ul class="dropdown-menu" style="top: 20px; right: 0px;">
+											<li><a href="javascript:void(0);" ng-click="isloading = false; imageUpload = true; step2 = false;">Edit Image</a></li>
+											<li><a href="javascript:void(0);" ng-click="deleteImage">Delete Image</a></li>
+											<!-- <li><a href="#">Oldest</a></li> -->
+										</ul>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div ng-show="uploadTextContainer || uploadVideoContainer" class="form-group" ng-class="{ 'has-error': formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url) }">
-					<input type="url" name="linkURL" id="linkURL" class="form-control {{cp.post.linkURL ? ng-valid : ''}}" ng-model="cp.post.linkURL"
-					    placeholder="link url" />
-					<span ng-show="formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url)" class="help-block">Please enter valid link url</span>
-				</div>
+					<div ng-show="uploadTextContainer || uploadVideoContainer" class="form-group" ng-class="{ 'has-error': formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url) }">
+						<input type="url" name="linkURL" id="linkURL" class="form-control {{cp.post.linkURL ? ng-valid : ''}}" ng-model="cp.post.linkURL"
+						    placeholder="link url" />
+						<span ng-show="formCreatePost.linkURL.$dirty && (formCreatePost.linkURL.$error.url)" class="help-block">Please enter valid link url</span>
+					</div>
 
-				<div class="form-group" ng-class="{ 'has-error': formCreatePost.userId.$dirty && (formCreatePost.userId.$error.required) }">
-					<textarea type="text" width="100%" row="4" name="selfText" id="selfText" class="form-control {{cp.post.selfText ? ng-valid : ''}}"
-					    ng-model="cp.post.selfText" placeholder="text (optional)"></textarea>
-					<span ng-show="formCreatePost.selfText.$dirty && formCreatePost.selfText.$error.required" class="help-block">Please enter valid text</span>
-				</div>
-				<div class="add-post-data text-center"><a href=""><i class="fa fa-plus" aria-hidden="true"></i>add an image</a></div>
+					<div class="form-group" ng-class="{ 'has-error': formCreatePost.userId.$dirty && (formCreatePost.userId.$error.required) }">
+						<textarea type="text" width="100%" row="4" name="selfText" id="selfText" class="form-control {{cp.post.selfText ? ng-valid : ''}}"
+						    ng-model="cp.post.selfText" placeholder="text (optional)"></textarea>
+						<span ng-show="formCreatePost.selfText.$dirty && formCreatePost.selfText.$error.required" class="help-block">Please enter valid text</span>
+					</div>
+				</section>
+				<div class="add-post-data text-center" ng-click="addMoreImage()"><a href=""><i class="fa fa-plus" aria-hidden="true"></i>add an image</a></div>
 
 				<div class="form-group" ng-class="{ 'has-error': formCreatePost.userId.$dirty && (formCreatePost.userId.$error.required) }">
 					<span class="mandatorySign"><i class="fa fa-asterisk" aria-hidden="true"></i></span>

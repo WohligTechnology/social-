@@ -63,6 +63,12 @@
 			$scope.imageUpload = false;
 			$scope.step2 = true;
 		}
+		var imgIncrement = 0;
+		$scope.moreImage = [];
+		$scope.addMoreImage = function () {
+			imgIncrement++;
+			$scope.moreImage.push(imgIncrement);
+		}
 
 		cp.post = {
 			isPostPrivate: false
@@ -76,7 +82,7 @@
 			}
 		});
 		$scope.getBoards = function () {
-			var fullurl = 'service/sirf/getTopicMaster';
+			var fullurl = 'http://59.163.47.61/service/sirf/getTopicMaster';
 			$http.get(fullurl).success(function (data) {
 				if (data.statusCode == 1) {
 					$scope.boards = data.topicMasterList;
@@ -88,6 +94,7 @@
 			$route.reload();
 		}
 		$scope.createPost = function () {
+			console.log("cp", cp)
 			cp.post.permLink = $filter('spaceless')(cp.post.title) + '/';
 			$scope.currentpermLink = $filter('spaceless')(cp.post.title);
 			cp.dataLoading = true;
@@ -102,6 +109,7 @@
 				url: fullurl,
 				data: cp.post
 			}).then(function (data) {
+				console.log("response data", data)
 				cp.dataLoading = false;
 				if (data.data.statusCode == 1) {
 					toasty.info({
@@ -139,7 +147,7 @@
 						if (!file.$error) {
 							$scope.isloading = true;
 							Upload.upload({
-								url: 'service/sirfUser/upload',
+								url: 'http://59.163.47.61/service/sirfUser/upload',
 								data: {
 									document: file,
 									fileName: 'abc.jpg',
@@ -159,10 +167,11 @@
 									});
 								}
 							}, null, function (evt) {
+								console.log("evt", evt);
 								var progressPercentage = parseInt(100.0 *
 									evt.loaded / evt.total);
 								$scope.log = 'progress: ' + progressPercentage +
-									'% ' + evt.config.data.file.name + '\n' +
+									'% ' + evt.config.data.fileName + '\n' +
 									$scope.log;
 							});
 						}
