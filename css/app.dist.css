@@ -2580,7 +2580,7 @@ typeahead {
     height: 42px !important;
     font-family: Muli !important;
     font-weight: 600;
-    font-size: 18px !important;
+    font-size: 16px !important;
     color: #428dc2;
     letter-spacing: 0;
     text-align: left;
@@ -2596,7 +2596,7 @@ typeahead {
     width: 110px;
     height: 40px;
     font-family: ArchitectsDaughter;
-    font-size: 18px;
+    font-size: 16px;
     color: #ffffff;
     letter-spacing: 0;
     border: none;

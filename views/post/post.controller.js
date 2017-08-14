@@ -69,6 +69,9 @@
 			imgIncrement++;
 			$scope.moreImage.push(imgIncrement);
 		}
+		$scope.deleteImage = function (index) {
+			$scope.moreImage.splice(index, 1);
+		}
 
 		cp.post = {
 			isPostPrivate: false

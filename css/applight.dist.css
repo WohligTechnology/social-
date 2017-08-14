@@ -1983,19 +1983,19 @@ div.col-md-12 div.uploadButtons.row div.col-md-3 button.btn.btn-primary.btn-bloc
 	font-family: 'Muli', sans-serif;
 	font-weight: normal;
 	font-size:18px;
-color:#11527f;
+    color:#11527f;
 }
 .uploadImageContainer.row .orLabel {
 	font-family: 'Muli', sans-serif !important;
 	font-weight: normal;
 	font-size:24px;
-color:#11527f;
+    color:#11527f;
 }
 .uploadImageUrlBox .uploadImageUrl input.ng-pristine.ng-valid.ng-touched {
 	font-family: 'Muli', sans-serif !important;
 	font-weight: normal;
 	font-size:18px;
-color:#428dc2;
+    color:#428dc2;
 }
 .uploadImageUrlBox .uploadImageUrl button.btn.btn-primary {
 	font-family: 'Architects Daughter', cursive;
