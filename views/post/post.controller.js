@@ -24,6 +24,7 @@
 		$scope.uploadVideoContainer = false;
 		$scope.uploadTextContainer = false;
 		$scope.linkInput;
+		$scope.temp = [];
 		$scope.initImageUpload = function ($event) {
 			$scope.uploadImageContainer = true;
 			$scope.uploadGifContainer = false;
@@ -57,7 +58,7 @@
 			$($event.target).addClass('selected');
 		}
 		$scope.addLinkToText = function (link) {
-			cp.post.linkURL = link;
+			//cp.post.linkURL = link;
 			$('#linkURL:not(hidden)').addClass('filled');
 			$scope.isloading = false;
 			$scope.imageUpload = false;
@@ -66,11 +67,11 @@
 		var imgIncrement = 0;
 		$scope.moreImage = [];
 		$scope.addMoreImage = function () {
-			imgIncrement++;
-			$scope.moreImage.push(imgIncrement);
+			$scope.imageUpload = true
+			$scope.step2 = false
 		}
 		$scope.deleteImage = function (index) {
-			$scope.moreImage.splice(index, 1);
+			$scope.temp.splice(index, 1);
 		}
 
 		cp.post = {
@@ -101,12 +102,24 @@
 			cp.post.permLink = $filter('spaceless')(cp.post.title) + '/';
 			$scope.currentpermLink = $filter('spaceless')(cp.post.title);
 			cp.dataLoading = true;
-			if (cp.post.selfText == null) {
-				cp.post.selfText = "&nbsp;"
+			// if (cp.post.selfText == null) {
+			// 	cp.post.selfText = "&nbsp;"
+			// }
+			cp.post.imageList = [];
+			for (var i = 0; i <= $scope.temp.length - 1; i++) {
+				cp.post.imageList.push({
+					"url": $scope.temp[i].path,
+					"selfTextHtml": $scope.temp[i].selfText,
+					"line_No": i.toString()
+				})
+
 			}
+			cp.post.isSelf = "true"
+			cp.post.thumbnail = "sfsddsf";
+			console.log(cp.post)
 			$scope.formCreatePost.$setPristine();
 			$scope.formCreatePost.$setUntouched();
-			var fullurl = 'http://59.163.47.61/service/sirfUser/createPost';
+			var fullurl = 'http://59.163.47.61/service/sirfUser/postTopic';
 			$http({
 				method: 'POST',
 				url: fullurl,
@@ -162,8 +175,13 @@
 									$scope.imageUpload = false;
 									$scope.step2 = true;
 									$scope.uploadedImagePath = resp.data.urlPath;
-									cp.post.linkURL = resp.data.urlPath;
+									//cp.post.linkURL = resp.data.urlPath;
 									cp.post.thumbnail = resp.data.thumbnailPath;
+									$scope.temp.push({
+										"path": $scope.uploadedImagePath,
+										"linkUrl": resp.data.urlPath,
+										"thumbnail": cp.post.thumbnail
+									});
 								} else {
 									toasty.error({
 										title: resp.data.statusMessage
