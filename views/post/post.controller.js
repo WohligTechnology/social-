@@ -115,11 +115,11 @@
 
 			}
 			cp.post.isSelf = "true"
-			cp.post.thumbnail = "sfsddsf";
+
 			console.log(cp.post)
 			$scope.formCreatePost.$setPristine();
 			$scope.formCreatePost.$setUntouched();
-			var fullurl = 'http://59.163.47.61/service/sirfUser/postTopic';
+			var fullurl = 'http://59.163.47.61/service/sirfUser/createPost';
 			$http({
 				method: 'POST',
 				url: fullurl,

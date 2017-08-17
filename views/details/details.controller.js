@@ -47,8 +47,9 @@
 				} else {
 					$scope.currentData = data;
 					var selfText = $scope.currentData.subReddit_selfTextHtml;
-					selfText = selfText.replace('&lt;!-- SC_OFF --&gt;', '');
-					selfText = selfText.replace('&lt;!-- SC_ON --&gt;', '');
+					console.log("selftext", $scope.currentData)
+					// selfText = selfText.replace('&lt;!-- SC_OFF --&gt;', '');
+					// selfText = selfText.replace('&lt;!-- SC_ON --&gt;', '');
 					$scope.currentData.subReddit_selfTextHtml = $.trim(selfText);
 					console.log($scope.currentData.subReddit_selfTextHtml);
 					if ($scope.currentData.subReddit_selfTextHtml) {
