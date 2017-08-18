@@ -30,6 +30,9 @@
 							</ul>
 						</span>
 						<a href="javascript:void(0);" ng-click="isCommentFormOpen = !isCommentFormOpen; isCommentPosted = !isCommentPosted; commentsBody = ''; focusOnInput();"><i class="fa fa-pencil" aria-hidden="true" ng-show="!isReplyFormOpen"></i><i class="fa fa-pencil-square" aria-hidden="true" ng-show="isReplyFormOpen" style="color:#000"></i></a>
+
+						<a href="javascript:void(0);"><i class="fa fa-hashtag" aria-hidden="true"></i></a>
+
 						<a href="javascript:void(0);" class="pull-right"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
 					</div>
 				</div>
@@ -81,8 +84,16 @@
 				</div>
 			</div>
 			<div class="col-md-4 postCommentContainer">
+				<div>
+					<div class="form-group">
+						<input type="text" class="form-control commenttextBox" placeholder="Enter the number of votes">
+					</div>
+				</div>
 				<div ng-show="isCommentFormOpen" ng-hide="isCommentPosted" class="commenttextBoxContent">
 					<form name="commentNreply">
+						<div class="form-group">
+							<textarea class="form-control commenttextBox " rows="5" id="comment"></textarea>
+						</div>
 						<input type="hidden" class="parentcommentID" value="">
 						<textarea ng-keyup="autoExpand($event)" id="commentsBody" name="commentsBody" class="col-md-12 commenttextBox" placeholder="Write a comment"
 						    ng-model="commentsBody" ng-trim="true" maxlength="140" required focus-me="shouldBeOpen"></textarea>

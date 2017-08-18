@@ -2291,7 +2291,8 @@ div.col-md-12 div.uploadButtons.row div.col-md-3 button.btn.btn-primary.btn-bloc
     font-size: 24px;
 }
 
-.iconspan a i.fa.fa-share-alt {
+.iconspan a i.fa.fa-share-alt,
+.iconspan a i.fa.fa-hashtag {
     font-size: 24px;
 }
 
