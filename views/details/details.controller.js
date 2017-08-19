@@ -19,7 +19,7 @@
 		$scope.favouriteName = $routeParams.favouriteName;
 		$scope.offset = parseInt($routeParams.offset);
 		$scope.sortType = $routeParams.sortType;
-
+		console.log("userpriv", $rootScope.userpriv);
 
 		$scope.routeParamstopicId = $routeParams.pageId
 		$scope.routeParamstopicName = $routeParams.topicName ? $routeParams.topicName : "";
@@ -29,6 +29,18 @@
 		$scope.routeParamsoffset = $routeParams.offset != 0 ? $routeParams.offset : "";
 		$scope.routeParamssortType = $routeParams.sortType != 0 ? $routeParams.sortType : "";
 
+		for (var i = 0; i <= $rootScope.userpriv.length - 1; i++) {
+			if ($rootScope.userpriv[i] == "TAGGING") {
+				$scope.tagging = true;
+			} else {
+				$scope.tagging = false;
+			}
+			if ($rootScope.userpriv[i] == "POSTMASTERVOTES") {
+				$scope.masterVotes = true;
+			} else {
+				$scope.masterVotes = false;
+			}
+		}
 
 		var fullurl = 'http://59.163.47.61/service/sirfUser/details?&topicId=' + $scope.routeParamstopicId + '&topicName=' + $scope.routeParamstopicName + '&postType=' + $scope.routeParamspostType + '&userID=' + $scope.routeParamsuserID + '&favouriteName=' + $scope.routeParamsfavouriteName + '&offset=' + $scope.routeParamsoffset + '&sortType=' + $scope.routeParamssortType;
 		$scope.renderHtml = function (html_code) {
@@ -46,6 +58,7 @@
 					});
 				} else {
 					$scope.currentData = data;
+					$scope.imageData = $scope.currentData.imageList
 					var selfText = $scope.currentData.subReddit_selfTextHtml;
 					console.log("selftext", $scope.currentData)
 					// selfText = selfText.replace('&lt;!-- SC_OFF --&gt;', '');

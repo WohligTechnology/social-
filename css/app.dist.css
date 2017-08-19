@@ -2779,6 +2779,12 @@ typeahead {
     font-size: 10px;
 }
 
+.mainContent .selfImage {
+    /*max-height: 300px;*/
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
 .mainContent .selfImage,
 .mainContent .selfText {
     text-align: center;

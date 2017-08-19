@@ -1,6 +1,7 @@
 <section class="detailsTab">
 	<div class="loadingdata" ng-show="isloading">
 		<div class="sirflogo">Sirf</div>
+
 	</div>
 	<div class="postContent col-md-12" ng-show="!isloading">
 		<div class="row row-block">
@@ -57,7 +58,7 @@
 
 			<div class="col-md-8 postContentContainer">
 				<div class="mainContent">
-					<div ng-show="!currentData.subReddit_selfTextHtml" id="redditContainer">
+					<div ng-if="currentData.subReddit_selfTextHtml" id="redditContainer">
 						<embed-video ng-if="!currentData.subReddit_selfTextHtml" ng-href="{{subReddit_url}}" on-change="videoSelected(videoId, provider)"
 						    ng-show="isVideo" width="100%" height="100%"></embed-video>
 						<div class="iframeContainer" id="iframeContainer" style="text-align: center;">
@@ -65,8 +66,8 @@
 						</div>
 						<div class="spinnerContainer"></div>
 					</div>
-					<div ng-show="currentData.subReddit_selfTextHtml" style="width:100%; height:100%; text-align: center;" id="sirfContainer">
-						<div class="selfImage" ng-show="isURLImage"><img src="{{currentData.subReddit_url}}" /></div>
+					<div ng-repeat="img in imageData" ng-show="img.selfTextHtml" style="width:100%; height:100%; text-align: center;" id="sirfContainer">
+						<div class="selfImage" ng-show="isURLImage"><img ng-src="{{img.url}}" class="center-block img-responsive" /></div>
 						<div ng-show="!isURLImage" style="width:100%;">
 							<embed-video ng-if="currentData.subReddit_selfTextHtml" ng-href="{{subReddit_url}}" on-change="videoSelected(videoId, provider)"
 							    ng-show="isVideo" width="100%" height="100%"></embed-video>
@@ -75,14 +76,14 @@
 							</div>
 							<div class="spinnerContainer"></div>
 						</div>
-						<div ng-if="currentData.subReddit_selfTextHtml && (renderHtml(currentData.subReddit_selfTextHtml) != '&nbsp;')" class="selfText"
-						    ng-bind-html="renderHtml(currentData.subReddit_selfTextHtml)"></div>
+						<div ng-if="img.selfTextHtml && (renderHtml(img.selfTextHtml) != '&nbsp;')" class="selfText" ng-bind-html="renderHtml(img.selfTextHtml)"></div>
 					</div>
 				</div>
 				<div class="postContentExpander" title="Expend/Collapse Content View">
 					<i class="fa fa-angle-double-right" aria-hidden="true"></i>
 				</div>
 			</div>
+
 			<div class="col-md-4 postCommentContainer">
 				<div>
 					<div class="form-group">
