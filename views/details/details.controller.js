@@ -77,7 +77,7 @@
 		$scope.getDetails();
 
 		$scope.updateViewCount = function () {
-			var fullurl = 'service/sirf/updateView';
+			var fullurl = 'http://59.163.47.61/service/sirf/updateView';
 			$http({
 				method: 'POST',
 				url: fullurl,
@@ -491,7 +491,7 @@
 				var parentcommentID = $($event.currentTarget).closest('.commenttextBoxContent').find('.parentcommentID')[0].value;
 				parentcommentID = parentcommentID ? parentcommentID : '';
 				var action = action ? action : 'ADD';
-				var fullurl = 'service/sirf/postComment';
+				var fullurl = 'http://59.163.47.61/service/sirf/postComment';
 				$http({
 					method: 'POST',
 					url: fullurl,
