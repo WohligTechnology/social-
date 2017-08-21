@@ -19,28 +19,40 @@
 		$scope.favouriteName = $routeParams.favouriteName;
 		$scope.offset = parseInt($routeParams.offset);
 		$scope.sortType = $routeParams.sortType;
-		console.log("userpriv", $rootScope.userpriv);
-
+		$scope.tagging = false;
+		$scope.masterVotes = false;
+		$scope.openTextArea = false;
 		$scope.routeParamstopicId = $routeParams.pageId
 		$scope.routeParamstopicName = $routeParams.topicName ? $routeParams.topicName : "";
 		$scope.routeParamspostType = $routeParams.postType != 0 ? $routeParams.postType : "";
 		$scope.routeParamsuserID = $routeParams.userID != 0 ? $routeParams.userID : "";
 		$scope.routeParamsfavouriteName = $routeParams.favouriteName != 0 ? $routeParams.favouriteName : "";
-		$scope.routeParamsoffset = $routeParams.offset != 0 ? $routeParams.offset : "";
+		$scope.routeParamsoffset = $routeParams.offset != 0 ? $routtaggeParams.offset : "";
 		$scope.routeParamssortType = $routeParams.sortType != 0 ? $routeParams.sortType : "";
-
-		for (var i = 0; i <= $rootScope.userpriv.length - 1; i++) {
-			if ($rootScope.userpriv[i] == "TAGGING") {
-				$scope.tagging = true;
-			} else {
-				$scope.tagging = false;
-			}
-			if ($rootScope.userpriv[i] == "POSTMASTERVOTES") {
-				$scope.masterVotes = true;
-			} else {
-				$scope.masterVotes = false;
-			}
+		$scope.userPriv = sessionStorage.getItem("privlages")
+		if (sessionStorage.getItem("tagging") == true) {
+			$scope.tagging = sessionStorage.getItem("tagging")
+			console.log($scope.tagging);
 		}
+		if (sessionStorage.getItem("postmastervotes") == true) {
+			$scope.masterVotes = sessionStorage.getItem("postmastervotes")
+			console.log($scope.masterVotes);
+		}
+		// if ($scope.userPriv) {
+		// 	for (var i = 0; i <= $scope.userPriv.length - 1; i++) {
+		// 		if ($scope.userPriv[i] == "TAGGING") {
+		// 			$scope.tagging = true;
+		// 			break;
+		// 		}
+		// 	}
+		// 	for (var i = 0; i <= $scope.userPriv.length - 1; i++) {
+		// 		if ($scope.userPriv[i] == "POSTMASTERVOTES") {
+		// 			$scope.masterVotes = true;
+		// 			break;
+		// 		}
+		// 	}
+		// 	console.log("tagging", $scope.tagging)
+		// }
 
 		var fullurl = 'http://59.163.47.61/service/sirfUser/details?&topicId=' + $scope.routeParamstopicId + '&topicName=' + $scope.routeParamstopicName + '&postType=' + $scope.routeParamspostType + '&userID=' + $scope.routeParamsuserID + '&favouriteName=' + $scope.routeParamsfavouriteName + '&offset=' + $scope.routeParamsoffset + '&sortType=' + $scope.routeParamssortType;
 		$scope.renderHtml = function (html_code) {

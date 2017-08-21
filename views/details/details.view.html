@@ -32,7 +32,9 @@
 						</span>
 						<a href="javascript:void(0);" ng-click="isCommentFormOpen = !isCommentFormOpen; isCommentPosted = !isCommentPosted; commentsBody = ''; focusOnInput();"><i class="fa fa-pencil" aria-hidden="true" ng-show="!isReplyFormOpen"></i><i class="fa fa-pencil-square" aria-hidden="true" ng-show="isReplyFormOpen" style="color:#000"></i></a>
 
-						<a href="javascript:void(0);"><i class="fa fa-hashtag" aria-hidden="true"></i></a>
+						<a href="javascript:void(0);" ng-if="loginDetails.isLoggedIn == false"><i class="fa fa-hashtag"  aria-hidden="true"></i></a>
+						<a href="javascript:void(0);" ng-if="loginDetails.isLoggedIn == true && tagging == false"><i class="fa fa-hashtag"  aria-hidden="true"></i></a>
+						<a href="javascript:void(0);" ng-if="loginDetails.isLoggedIn == true && tagging == true"><i class="fa fa-hashtag"  aria-hidden="true"></i></a>
 
 						<a href="javascript:void(0);" class="pull-right"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
 					</div>
@@ -93,7 +95,8 @@
 				<div ng-show="isCommentFormOpen" ng-hide="isCommentPosted" class="commenttextBoxContent">
 					<form name="commentNreply">
 						<div class="form-group">
-							<textarea class="form-control commenttextBox " rows="5" id="comment"></textarea>
+							<textarea class="form-control commenttextBox " ng-if="openTextArea" rows="5" id="comment"></textarea>
+							<pre>logedin:{{loginDetails.isLoggedIn}} tagging:{{tagging}}</pre>
 						</div>
 						<input type="hidden" class="parentcommentID" value="">
 						<textarea ng-keyup="autoExpand($event)" id="commentsBody" name="commentsBody" class="col-md-12 commenttextBox" placeholder="Write a comment"
