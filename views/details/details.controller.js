@@ -30,11 +30,11 @@
 		$scope.routeParamsoffset = $routeParams.offset != 0 ? $routtaggeParams.offset : "";
 		$scope.routeParamssortType = $routeParams.sortType != 0 ? $routeParams.sortType : "";
 		$scope.userPriv = sessionStorage.getItem("privlages")
-		if (sessionStorage.getItem("tagging") == true) {
+		if (sessionStorage.getItem("tagging")) {
 			$scope.tagging = sessionStorage.getItem("tagging")
 			console.log($scope.tagging);
 		}
-		if (sessionStorage.getItem("postmastervotes") == true) {
+		if (sessionStorage.getItem("postmastervotes")) {
 			$scope.masterVotes = sessionStorage.getItem("postmastervotes")
 			console.log($scope.masterVotes);
 		}
